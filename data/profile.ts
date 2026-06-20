@@ -16,9 +16,9 @@ export const profile = {
     "Transformo problemas complexos em sistemas eficientes, escaláveis e limpos — do banco de dados à interface do usuário.",
 
   // Sobre
-  aboutTitle: "Muito além do código: construindo ecossistemas completos.",
+  aboutTitle: "Além de código: construindo ecossistemas completos.",
   aboutParagraphs: [
-    "Sou estudante de Sistemas de Informação na UFN e gosto de estar sempre aprendendo algo novo. Antes de escrever a primeira linha de código, prefiro entender bem o problema.",
+    "Sou estudante de Sistemas de Informação na UFN e gosto de estar sempre aprendendo algo novo. Antes de escrever código, prefiro entender bem o problema.",
     "Atualmente atuo na equipe de Tecnologia da Informação do Ministério Público do Trabalho (MPT), onde garanto a estabilidade da infraestrutura e presto suporte direto, além de desenvolver sistemas e automações para resolver demandas reais da instituição.",
     "Transito com facilidade entre back-end e front-end, construindo desde interfaces responsivas e apps mobile até integrações complexas de APIs, serviços em nuvem e inteligência artificial — sempre com foco em código limpo e alinhado ao negócio.",
     "Fora do código, sou apaixonado por esportes e carros. Treino e corro com frequência — já completei duas meias-maratonas. Sou bem comunicativo, gosto de trabalhar em equipe e de fazer novas amizades por onde passo.",
