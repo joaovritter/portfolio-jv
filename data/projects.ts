@@ -1,3 +1,10 @@
+export type ProjectImage = {
+  /** Caminho do arquivo em /public/projects/ */
+  src: string;
+  /** Descrição curta — aparece no cantinho da imagem e na tela cheia */
+  caption: string;
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -17,40 +24,55 @@ export type Project = {
   /**
    * Imagens do projeto (sem vídeo). Coloque os arquivos em /public/projects/
    * e referencie aqui. A primeira imagem é usada como capa do card.
+   * Cada imagem tem uma legenda (caption) dizendo qual página/tela é.
    */
-  images: string[];
+  images: ProjectImage[];
 };
 
 /**
  * COMO ADICIONAR UM PROJETO:
- * 1. Coloque as imagens em  public/projects/  (ex.: public/projects/meu-app-1.jpg)
+ * 1. Coloque as imagens em  public/projects/  (ex.: public/projects/meu-app/tela1.png)
  * 2. Duplique um bloco abaixo e ajuste os campos.
- * 3. O botão "Acessar projeto" usa `demo`; o de código usa `github`.
+ * 3. Cada imagem é um objeto { src, caption } — a caption aparece no cantinho.
+ * 4. O botão "Acessar projeto" usa `demo`; o de código usa `github`.
  *
- * As imagens atuais são placeholders (.svg) só para você ver o layout —
+ * As imagens com placeholder (.svg) são só para você ver o layout —
  * basta substituir pelos prints reais dos seus projetos.
  */
 export const projects: Project[] = [
   {
-    id: "projeto-1",
-    title: "Sistema de Agendamento — Clínica",
-    tagline: "Plataforma web para gestão de consultas e pacientes.",
+    id: "ritter-co-clinica",
+    title: "Ritter&Co — Sistema de Gestão para Clínica Estética",
+    tagline:
+      "Plataforma fullstack de agendamento, financeiro e dashboards para uma clínica de estética.",
     description:
-      "Aplicação completa para administração de uma clínica: agendamento de consultas, gestão de pacientes e painel administrativo. Foco em uma interface limpa, responsiva e em um fluxo de uso rápido para a recepção.",
+      "Sistema completo de gestão para a clínica da Dra. Camila Ritter (Biomédica Esteta): agendamento de procedimentos em calendário, controle de caixa e painéis analíticos. O backend aplica transações de banco e controle de concorrência otimista (versionamento de registros) para garantir consistência mesmo com acessos simultâneos — ex.: dois usuários editando o mesmo agendamento, onde o segundo recebe um conflito (HTTP 409) em vez de sobrescrever dados.",
     highlights: [
-      "Painel administrativo com visão geral de consultas do dia",
-      "Cadastro e busca de pacientes",
-      "Interface responsiva pensada para uso em recepção e mobile",
-      "Arquitetura organizada com separação de responsabilidades",
+      "Controle de concorrência otimista (campo de versão) — conflitos retornam HTTP 409 em vez de corromper dados",
+      "Transações de banco orquestradas: agendar reserva o horário e cria o registro de forma atômica (commit/rollback)",
+      "Dashboards de gestão (estilo BI): faturamento por mês/procedimento/forma de pagamento, ticket médio e extrato de caixa",
+      "Conclusão de procedimento que registra valor + forma de pagamento na mesma transação",
+      "Autenticação com JWT + bcrypt e hardening da API (Helmet, rate limiting, CORS)",
+      "Interface mobile-first com tema próprio, calendário mensal e exportação de extrato em PDF",
     ],
-    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    year: "2025",
-    github: "https://github.com/joaovritter",
+    stack: [
+      "React",
+      "Vite",
+      "Material UI",
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "JWT",
+    ],
+    year: "2026",
+    github: "https://github.com/joaovritter/agendamentoClinica",
     demo: "",
     images: [
-      "/projects/placeholder-1.svg",
-      "/projects/placeholder-2.svg",
-      "/projects/placeholder-3.svg",
+      { src: "/projects/gestao-clinica/tela1.png", caption: "Início — visão geral e próximo agendamento" },
+      { src: "/projects/gestao-clinica/tela2.png", caption: "Calendário e histórico de atendimentos" },
+      { src: "/projects/gestao-clinica/tela3.png", caption: "Agendamento de procedimento" },
+      { src: "/projects/gestao-clinica/tela4.png", caption: "Gestão — KPIs e gráficos de faturamento" },
+      { src: "/projects/gestao-clinica/tela5.png", caption: "Caixa / extrato com exportação em PDF" },
     ],
   },
   {
@@ -68,7 +90,10 @@ export const projects: Project[] = [
     year: "2025",
     github: "https://github.com/joaovritter",
     demo: "",
-    images: ["/projects/placeholder-2.svg", "/projects/placeholder-1.svg"],
+    images: [
+      { src: "/projects/placeholder-2.svg", caption: "Fluxo de automação" },
+      { src: "/projects/placeholder-1.svg", caption: "Relatório gerado" },
+    ],
   },
   {
     id: "projeto-3",
@@ -85,6 +110,9 @@ export const projects: Project[] = [
     year: "2024",
     github: "https://github.com/joaovritter",
     demo: "",
-    images: ["/projects/placeholder-3.svg", "/projects/placeholder-1.svg"],
+    images: [
+      { src: "/projects/placeholder-3.svg", caption: "Tela inicial" },
+      { src: "/projects/placeholder-1.svg", caption: "Login" },
+    ],
   },
 ];

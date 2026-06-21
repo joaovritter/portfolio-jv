@@ -37,8 +37,8 @@ export default function Projects() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={project.images[0]}
-                  alt={project.title}
+                  src={project.images[0].src}
+                  alt={project.images[0].caption || project.title}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/10 to-transparent opacity-90" />

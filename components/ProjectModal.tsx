@@ -9,6 +9,7 @@ import {
   FiGithub,
   FiExternalLink,
   FiMaximize2,
+  FiImage,
 } from "react-icons/fi";
 import type { Project } from "@/data/projects";
 
@@ -104,13 +105,20 @@ export default function ProjectModal({
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={images[index]}
-                    alt={`${project.title} — imagem ${index + 1}`}
+                    src={images[index].src}
+                    alt={images[index].caption || `${project.title} — imagem ${index + 1}`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
                   <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-base/60 text-sand opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
                     <FiMaximize2 size={16} />
                   </span>
+
+                  {images[index].caption && (
+                    <span className="absolute bottom-3 left-3 inline-flex max-w-[80%] items-center gap-1.5 rounded-full bg-base/60 px-3 py-1 text-xs text-sand backdrop-blur">
+                      <FiImage size={12} className="shrink-0" />
+                      <span className="truncate">{images[index].caption}</span>
+                    </span>
+                  )}
 
                   {total > 1 && (
                     <>
@@ -127,8 +135,9 @@ export default function ProjectModal({
                   <div className="flex gap-2 overflow-x-auto pb-1">
                     {images.map((img, i) => (
                       <button
-                        key={img + i}
+                        key={img.src + i}
                         onClick={() => setIndex(i)}
+                        title={img.caption}
                         className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border transition-all ${
                           i === index
                             ? "border-accent ring-1 ring-accent/40"
@@ -137,8 +146,8 @@ export default function ProjectModal({
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={img}
-                          alt={`miniatura ${i + 1}`}
+                          src={img.src}
+                          alt={img.caption || `miniatura ${i + 1}`}
                           className="h-full w-full object-cover"
                         />
                       </button>
@@ -263,17 +272,26 @@ export default function ProjectModal({
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.25 }}
-                  src={images[index]}
-                  alt={`${project.title} — imagem ${index + 1} em tela cheia`}
+                  src={images[index].src}
+                  alt={images[index].caption || `${project.title} — imagem ${index + 1} em tela cheia`}
                   className="max-h-[88vh] max-w-[92vw] rounded-xl object-contain shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 />
 
-                {total > 1 && (
-                  <span className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-line bg-surface2/70 px-4 py-1.5 text-sm text-sand">
-                    {index + 1} / {total}
-                  </span>
-                )}
+                <span
+                  className="absolute bottom-6 left-1/2 flex max-w-[90vw] -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-surface2/70 px-4 py-1.5 text-sm text-sand"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {images[index].caption && (
+                    <span className="truncate">{images[index].caption}</span>
+                  )}
+                  {total > 1 && (
+                    <span className="shrink-0 text-muted">
+                      {images[index].caption ? "· " : ""}
+                      {index + 1}/{total}
+                    </span>
+                  )}
+                </span>
               </motion.div>
             )}
           </AnimatePresence>
