@@ -79,11 +79,7 @@ export default function Hero() {
           animate="visible"
           className="flex max-w-4xl flex-col items-start"
         >
-          <motion.span
-            variants={item}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface2/60 px-4 py-1.5 text-sm text-muted"
-          >
-          </motion.span>
+         
 
           <motion.p
             variants={item}
