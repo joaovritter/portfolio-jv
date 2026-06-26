@@ -2,7 +2,7 @@ export const profile = {
   name: "João Vitor Ritter",
   fullName: "João Vitor Dos Santos Ritter",
   role: "Desenvolvedor Full Stack & Estudante de Sistemas de Informação",
-  shortRole: "Full Stack Developer",
+  shortRole: "Desenvolvedor Full Stack",
   location: "Santa Maria — RS, Brasil",
   email: "joaovritter2004@gmail.com",
   phone: "(55) 99963-3909",
@@ -11,18 +11,18 @@ export const profile = {
 
   // Frases do Hero
   heroGreeting: "Olá, eu sou",
-  heroHeadline: "João Vitor Ritter",
+  heroHeadline: "João Vitor dos Santos Ritter",
   heroTagline:
-    "Transformo problemas complexos em sistemas eficientes, escaláveis e limpos — do banco de dados à interface do usuário.",
-
+    "Desenvolvo sistemas completos, do banco de dados à interface do usuário. Meu foco é entender cada problema e criar soluções eficientes e fáceis de manter",
   // Sobre
   aboutTitle: "Além de código: construindo ecossistemas completos.",
   aboutParagraphs: [
-    "Sou estudante de Sistemas de Informação na UFN e gosto de estar sempre aprendendo algo novo. Antes de escrever código, prefiro entender bem o problema.",
-    "Atualmente atuo na equipe de Tecnologia da Informação do Ministério Público do Trabalho (MPT), onde garanto a estabilidade da infraestrutura e presto suporte direto, além de desenvolver sistemas e automações para resolver demandas reais da instituição.",
-    "Transito com facilidade entre back-end e front-end, construindo desde interfaces responsivas e apps mobile até integrações complexas de APIs, serviços em nuvem e inteligência artificial — sempre com foco em código limpo e alinhado ao negócio.",
-    "Fora do código, sou apaixonado por esportes e carros. Treino e corro com frequência — já completei duas meias-maratonas. Sou bem comunicativo, gosto de trabalhar em equipe e de fazer novas amizades por onde passo.",
+    "Sou estudante de Sistemas de Informação na UFN e gosto de aprender coisa nova o tempo todo. Antes de sair codando, prefiro entender bem o problema.",
+    "Hoje trabalho na equipe de TI do Ministério Público do Trabalho (MPT). Cuido para a infraestrutura ficar de pé, dou suporte direto e desenvolvo sistemas e automações para resolver o que a instituição precisa no dia a dia.",
+    "Me viro bem no back-end e no front-end: faço interfaces responsivas, apps mobile, integração de APIs, serviços em nuvem e IA. Em qualquer um deles, prezo por código limpo e que faça sentido para o negócio.",
+    "Fora do código, sou apaixonado por esportes e carros. Treino e corro bastante; já completei duas meias-maratonas. Sou comunicativo, gosto de trabalhar em equipe e de fazer amizade por onde passo.",
   ],
+
 
   socials: {
     github: "https://github.com/joaovritter",
@@ -47,5 +47,5 @@ export const education = {
   period: "2023 — Atualmente",
   semester: "7º semestre",
   focus:
-    "Desenvolvimento de software, lógica estruturada, arquitetura de sistemas de informação e banco de dados.",
+    "Desenvolvimento de software, lógica de programação, arquitetura de sistemas de informação e banco de dados.",
 };

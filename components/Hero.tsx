@@ -83,11 +83,6 @@ export default function Hero() {
             variants={item}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface2/60 px-4 py-1.5 text-sm text-muted"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            Disponível para novas oportunidades
           </motion.span>
 
           <motion.p
