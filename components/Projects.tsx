@@ -32,16 +32,28 @@ export default function Projects() {
               {/* Capa */}
               <button
                 onClick={() => setSelected(project)}
-                className="relative block aspect-[16/10] w-full overflow-hidden text-left"
+                className={`relative block aspect-[16/10] w-full overflow-hidden text-left ${
+                  project.thumbnail
+                    ? "bg-gradient-to-br from-surface2 to-surface"
+                    : ""
+                }`}
                 aria-label={`Ver detalhes de ${project.title}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={project.images[0].src}
-                  alt={project.images[0].caption || project.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  src={project.thumbnail ?? project.images[0].src}
+                  alt={
+                    project.thumbnail
+                      ? project.title
+                      : project.images[0].caption || project.title
+                  }
+                  className={`h-full w-full transition-transform duration-700 group-hover:scale-105 ${
+                    project.thumbnail ? "object-contain p-8" : "object-cover"
+                  }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/10 to-transparent opacity-90" />
+                {!project.thumbnail && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/10 to-transparent opacity-90" />
+                )}
 
                 {project.images.length > 1 && (
                   <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-base/60 px-3 py-1 text-xs text-sand backdrop-blur">

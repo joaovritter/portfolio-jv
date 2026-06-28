@@ -22,6 +22,12 @@ export type Project = {
   /** Link do deploy / projeto no ar (deixe "" para esconder o botão) */
   demo?: string;
   /**
+   * Capa do card na seção Projetos — normalmente um logo/arte do projeto.
+   * Aparece centralizada e inteira (sem cortar) sobre um fundo neutro.
+   * Se você não definir, o card usa a primeira imagem do carrossel como capa.
+   */
+  thumbnail?: string;
+  /**
    * Imagens do projeto (sem vídeo). Coloque os arquivos em /public/projects/
    * e referencie aqui. A primeira imagem é usada como capa do card.
    * Cada imagem tem uma legenda (caption) dizendo qual página/tela é.
@@ -35,6 +41,8 @@ export type Project = {
  * 2. Duplique um bloco abaixo e ajuste os campos.
  * 3. Cada imagem é um objeto { src, caption } — a caption aparece no cantinho.
  * 4. O botão "Acessar projeto" usa `demo`; o de código usa `github`.
+ * 5. (Opcional) Defina `thumbnail` com o caminho de um logo/arte para ser a
+ *    capa do card. Sem ele, o card usa a primeira imagem do carrossel.
  *
  * As imagens com placeholder (.svg) são só para você ver o layout —
  * basta substituir pelos prints reais dos seus projetos.
@@ -57,6 +65,7 @@ export const projects: Project[] = [
     stack: ["Flutter", "Dart", "Node.js", "Express", "PostgreSQL", "Docker", "Nginx", "Google Gemini", "JWT"],
     year: "2026",
     demo: "https://34.39.173.247",
+    // thumbnail: "/projects/train-bala/logo.png", // descomente após adicionar o logo
     images: [
       { src: "/projects/train-bala/tela1.png", caption: "Login na conta" },
       { src: "/projects/train-bala/tela2.png", caption: "Início — resumo dos últimos 7 dias e treino do dia" },
@@ -98,6 +107,7 @@ export const projects: Project[] = [
     ],
     year: "2026",
     demo: "",
+    // thumbnail: "/projects/gestao-clinica/logo.png", // descomente após adicionar o logo
     images: [
       { src: "/projects/gestao-clinica/tela1.png", caption: "Início — visão geral e próximo agendamento" },
       { src: "/projects/gestao-clinica/tela2.png", caption: "Calendário e histórico de atendimentos" },
@@ -125,6 +135,7 @@ export const projects: Project[] = [
     stack: ["React", "Vite", "JavaScript", "Framer Motion", "Vercel"],
     year: "2026",
     demo: "https://alziraalugueis.vercel.app/",
+    // thumbnail: "/projects/alugueis-alzira/logo.png", // descomente após adicionar o logo
     images: [
       { src: "/projects/alugueis-alzira/tela1.png", caption: "" },
       { src: "/projects/alugueis-alzira/tela2.png", caption: "" },
