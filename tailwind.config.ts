@@ -9,44 +9,71 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        base: "#0c0b0a",
-        surface: "#141210",
-        surface2: "#1b1815",
-        line: "rgba(236,231,225,0.09)",
-        sand: "#ece7e1",
-        muted: "#a39b91",
-        faint: "#6f675e",
-        accent: "#cbb89d",
-        accent2: "#9a8a74",
+        // Paleta "Ignition" (Claude Design)
+        base: "#13110E",
+        bg2: "#15120E",
+        surface: "#1A1712",
+        surface2: "#1E1B16",
+        line: "rgba(244,239,230,0.10)",
+        sand: "#F4EFE6",
+        soft: "#e4ded4",
+        cream: "#cfc7ba",
+        muted: "#a9a299",
+        muted2: "#9A938A",
+        faint: "#6f6960",
+        // Acento principal
+        acc: "#FF5A36",
+        acc2: "#ff8a66",
+        blue: "#3E7BFF",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        // display -> Archivo, sans -> Hanken Grotesk, mono -> JetBrains Mono
+        display: ["var(--font-archivo)", "system-ui", "sans-serif"],
+        sans: ["var(--font-hanken)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
-      borderRadius: {
-        "4xl": "2rem",
+      boxShadow: {
+        lift: "0 24px 50px -30px rgba(0,0,0,0.9)",
       },
       keyframes: {
-        "marquee-left": {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-50%)" },
+        charIn: {
+          from: { opacity: "0", transform: "translateY(118%) rotate(3deg)" },
+          to: { opacity: "1", transform: "none" },
         },
-        "marquee-right": {
-          from: { transform: "translateX(-50%)" },
-          to: { transform: "translateX(0)" },
+        fadeUp: {
+          from: { opacity: "0", transform: "translateY(18px)" },
+          to: { opacity: "1", transform: "none" },
         },
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
+        cueline: {
+          "0%": { transform: "scaleY(0)", transformOrigin: "top" },
+          "40%": { transform: "scaleY(1)", transformOrigin: "top" },
+          "60%": { transform: "scaleY(1)", transformOrigin: "bottom" },
+          "100%": { transform: "scaleY(0)", transformOrigin: "bottom" },
         },
-        shimmer: {
-          "100%": { transform: "translateX(100%)" },
+        pulse: {
+          "0%": { boxShadow: "0 0 0 0 rgba(255,90,54,.5)" },
+          "70%": { boxShadow: "0 0 0 9px rgba(255,90,54,0)" },
+          "100%": { boxShadow: "0 0 0 0 rgba(255,90,54,0)" },
+        },
+        popIn: {
+          from: { transform: "translateY(24px) scale(.972)" },
+          to: { transform: "none" },
+        },
+        glassSheen: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        auroraBreathe: {
+          "0%, 100%": { opacity: ".55", transform: "translate(-50%,-50%) scale(1)" },
+          "50%": { opacity: ".92", transform: "translate(-50%,-50%) scale(1.12)" },
         },
       },
       animation: {
-        "marquee-left": "marquee-left var(--marquee-duration, 40s) linear infinite",
-        "marquee-right": "marquee-right var(--marquee-duration, 40s) linear infinite",
-        "fade-in": "fade-in 0.8s ease forwards",
+        cueline: "cueline 2.2s ease-in-out infinite",
+        pulse2: "pulse 2s infinite",
+        "aurora-breathe": "auroraBreathe 9s ease-in-out infinite",
+        "glass-sheen": "glassSheen 8s ease-in-out infinite",
       },
     },
   },

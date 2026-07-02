@@ -1,17 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Archivo, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/data/profile";
 
-const inter = Inter({
+// Display / headings
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-archivo",
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+// Corpo de texto
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-hanken",
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+// Rótulos / código
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
@@ -43,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0c0b0a",
+  themeColor: "#13110E",
   width: "device-width",
   initialScale: 1,
 };
@@ -52,7 +64,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${archivo.variable} ${hanken.variable} ${mono.variable}`}
+    >
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

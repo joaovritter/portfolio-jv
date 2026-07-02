@@ -1,100 +1,91 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { FiCheck } from "react-icons/fi";
-import SectionHeading from "./SectionHeading";
+import SectionEyebrow from "./SectionEyebrow";
 import { experiences } from "@/data/experiences";
+import { tiltMove, tiltLeave } from "./tilt";
 
 export default function Experience() {
   return (
-    <section id="experiencia" className="relative scroll-mt-24 py-24 sm:py-32">
-      <div className="container-x">
-        <SectionHeading
-          eyebrow="Trajetória"
-          title="Experiência profissional"
-          description="Do hardware ao desenvolvimento de software, cada etapa somou na forma como trabalho hoje."
+    <section
+      id="experiencia"
+      className="relative mx-auto max-w-[1080px] scroll-mt-[90px] px-6"
+      style={{ paddingTop: 90, paddingBottom: 90 }}
+    >
+      <SectionEyebrow n="03" label="Experiência profissional" className="mb-[54px]" />
+
+      <div className="relative pl-[34px]">
+        <div
+          aria-hidden
+          className="absolute left-[7px] top-[6px] bottom-[6px] w-[2px]"
+          style={{
+            background:
+              "linear-gradient(180deg,var(--acc),rgba(244,239,230,.12) 30%,var(--line))",
+          }}
         />
 
-        <div className="relative mt-16">
-          {/* Linha central da timeline */}
-          <div
-            className="absolute left-[18px] top-2 bottom-2 w-px bg-gradient-to-b from-accent/50 via-line to-transparent md:left-1/2 md:-translate-x-1/2"
-            aria-hidden
-          />
-
-          <ol className="flex flex-col gap-12">
-            {experiences.map((exp, i) => {
-              const isLeft = i % 2 === 0;
-              return (
-                <li key={exp.company} className="relative md:grid md:grid-cols-2 md:gap-12">
-                  {/* Marcador */}
+        {experiences.map((x) => (
+          <div key={x.company} data-reveal className="relative mb-[34px]">
+            <span
+              className="absolute left-[-34px] top-6 h-4 w-4 rounded-full border-[3px] border-base"
+              style={{
+                background: x.current ? "var(--acc)" : "#2c2820",
+                boxShadow: x.current ? "0 0 0 4px rgba(var(--accrgb),.18)" : "none",
+              }}
+            />
+            <div
+              onMouseMove={tiltMove}
+              onMouseLeave={tiltLeave}
+              className="exp-card rounded-2xl"
+              style={{ padding: "26px 28px" }}
+            >
+              <div className="mb-1.5 flex flex-wrap items-center gap-3">
+                <span
+                  className="font-mono text-[12px] font-semibold tracking-[0.03em]"
+                  style={{ color: x.current ? "var(--acc)" : "#9A938A" }}
+                >
+                  {x.period}
+                </span>
+                {x.current && (
                   <span
-                    className="absolute left-[10px] top-2 z-10 grid h-5 w-5 place-items-center md:left-1/2 md:-translate-x-1/2"
-                    aria-hidden
+                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-[3px] font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-acc"
+                    style={{ background: "rgba(var(--accrgb),.12)" }}
                   >
-                    <span className="h-3 w-3 rounded-full bg-accent ring-4 ring-base" />
-                    {exp.current && (
-                      <span className="absolute h-5 w-5 animate-ping rounded-full bg-accent/40" />
-                    )}
+                    <span className="anim-pulse h-1.5 w-1.5 rounded-full bg-acc" />
+                    Atual
                   </span>
-
-                  <motion.article
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className={`ml-12 rounded-3xl border border-line bg-surface p-6 transition-colors hover:border-accent/30 md:ml-0 ${
-                      isLeft
-                        ? "md:col-start-1 md:text-right"
-                        : "md:col-start-2"
-                    }`}
+                )}
+              </div>
+              <h3 className="m-0 font-display text-[21px] font-extrabold leading-[1.2] tracking-[-0.01em]">
+                {x.role}
+              </h3>
+              <div className="mt-[3px] font-sans text-[14px] font-semibold text-acc">
+                {x.company}
+              </div>
+              <p className="mb-4 mt-3.5 max-w-[64ch] text-[15px] leading-[1.6] text-muted">
+                {x.description}
+              </p>
+              <ul className="m-0 grid list-none gap-[9px] p-0">
+                {x.highlights.map((h) => (
+                  <li
+                    key={h}
+                    className="flex items-start gap-[11px] text-[14px] leading-[1.5] text-[#bdb6ac]"
                   >
-                    <div
-                      className={`flex flex-wrap items-center gap-2 ${
-                        isLeft ? "md:justify-end" : ""
-                      }`}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      className="mt-[3px] h-[15px] w-[15px] shrink-0 text-acc"
                     >
-                      <span className="rounded-full border border-line bg-surface2 px-3 py-1 text-xs font-medium text-accent">
-                        {exp.period}
-                      </span>
-                      {exp.current && (
-                        <span className="rounded-full bg-accent/15 px-3 py-1 text-xs font-medium text-accent">
-                          Atual
-                        </span>
-                      )}
-                    </div>
-
-                    <h3 className="mt-4 font-display text-xl font-semibold text-sand">
-                      {exp.role}
-                    </h3>
-                    <p className="mt-1 text-sm font-medium text-accent2">{exp.company}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-muted">
-                      {exp.description}
-                    </p>
-
-                    <ul
-                      className={`mt-4 flex flex-col gap-2 ${
-                        isLeft ? "md:items-end" : ""
-                      }`}
-                    >
-                      {exp.highlights.map((h) => (
-                        <li
-                          key={h}
-                          className={`flex items-start gap-2 text-sm text-muted ${
-                            isLeft ? "md:flex-row-reverse md:text-right" : ""
-                          }`}
-                        >
-                          <FiCheck className="mt-0.5 shrink-0 text-accent" />
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.article>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+                      <path d="m5 12 4.5 4.5L19 7" />
+                    </svg>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -1,184 +1,161 @@
 "use client";
 
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useMotionTemplate,
-  type Variants,
-} from "framer-motion";
-import { FaGithub, FaLinkedinIn, FaInstagram } from "react-icons/fa";
-import { FiArrowDown, FiArrowUpRight, FiDownload, FiMapPin } from "react-icons/fi";
-import ParticlesBackground from "./ParticlesBackground";
+import HeroParticles from "./HeroParticles";
 import { profile } from "@/data/profile";
-
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const nameWords = profile.heroHeadline.split(" ");
+import { socials, iconMask } from "./socials";
 
 export default function Hero() {
-  // Spotlight que segue o mouse (apenas estético)
-  const mx = useMotionValue(50);
-  const my = useMotionValue(38);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-  const spotlight = useMotionTemplate`radial-gradient(620px circle at ${sx}% ${sy}%, rgba(203,184,157,0.12), transparent 70%)`;
-
-  const onMove = (e: React.MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mx.set(((e.clientX - rect.left) / rect.width) * 100);
-    my.set(((e.clientY - rect.top) / rect.height) * 100);
-  };
-
-  const scrollTo = (id: string) =>
+  const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
-      id="inicio"
-      onMouseMove={onMove}
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20"
+      id="hero"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden scroll-mt-[90px]"
     >
-      {/* fundo: partículas + brilhos neutros */}
-      <ParticlesBackground />
-      <motion.div
+      <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{ background: spotlight }}
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(58% 48% at 50% 40%, rgba(var(--accrgb),.11), transparent 72%)",
+        }}
       />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -left-32 top-10 -z-10 h-[420px] w-[420px] rounded-full bg-accent2/10 blur-[120px]"
-        animate={{ y: [0, 30, 0], opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 bottom-0 -z-10 h-[380px] w-[380px] rounded-full bg-accent/10 blur-[120px]"
-        animate={{ y: [0, -26, 0], opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <div className="absolute inset-0 -z-10 grain opacity-60" aria-hidden />
+      <HeroParticles />
 
-      <div className="container-x">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="visible"
-          className="flex max-w-4xl flex-col items-start"
+      <div
+        className="relative z-[2] w-full max-w-[1020px] text-center"
+        style={{ padding: "128px 24px 96px" }}
+      >
+        <div
+          className="mb-[26px] inline-flex items-center gap-2.5"
+          style={{ animation: "fadeUp .8s .05s both" }}
         >
-        
-
-          <motion.p
-            variants={item}
-            className="mb-3 font-display text-lg text-muted sm:text-xl"
-          >
+          <span
+            className="h-[7px] w-[7px] rounded-full bg-acc"
+            style={{ boxShadow: "0 0 12px var(--acc)" }}
+          />
+          <span className="font-mono text-[12px] font-semibold uppercase tracking-[0.28em] text-muted2">
             {profile.heroGreeting}
-          </motion.p>
+          </span>
+        </div>
 
-          <h1 className="font-display text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-            {nameWords.map((word, i) => (
-              <motion.span
-                key={i}
-                variants={item}
-                className="mr-[0.25em] inline-block text-gradient"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </h1>
-
-          <motion.p
-            variants={item}
-            className="mt-6 max-w-2xl text-balance text-lg font-medium text-sand/90 sm:text-xl"
-          >
-            {profile.role}
-          </motion.p>
-
-          <motion.p
-            variants={item}
-            className="mt-4 max-w-xl text-base leading-relaxed text-muted"
-          >
-            {profile.heroTagline}
-          </motion.p>
-
-          <motion.div variants={item} className="mt-9 flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => scrollTo("projetos")}
-              className="group inline-flex items-center gap-2 rounded-full bg-sand px-6 py-3 text-sm font-semibold text-base transition-transform hover:scale-[1.03] active:scale-95"
+        <h1
+          className="m-0 font-display font-black"
+          style={{
+            fontSize: "clamp(48px,11vw,128px)",
+            lineHeight: 0.92,
+            letterSpacing: "-0.02em",
+          }}
+        >
+          <span className="block overflow-hidden" style={{ paddingBottom: ".05em" }}>
+            <span
+              className="glasstext glasstext-1"
+              style={{
+                animation:
+                  "charIn 1s cubic-bezier(.2,.85,.2,1) .15s both, glassSheen 8s ease-in-out 1.2s infinite",
+              }}
             >
-              Ver meus projetos
-              <FiArrowUpRight className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
-            <a
-              href={profile.resume}
-              download
-              className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface2/60 px-6 py-3 text-sm font-semibold text-sand transition-all hover:border-accent/50 hover:bg-surface2"
-            >
-              <FiDownload className="transition-transform group-hover:translate-y-0.5" />
-              Baixar currículo
-            </a>
-          </motion.div>
-
-          <motion.div
-            variants={item}
-            className="mt-9 flex flex-wrap items-center gap-5"
-          >
-            <div className="flex items-center gap-3">
-              {[
-                { href: profile.socials.github, icon: FaGithub, label: "GitHub" },
-                { href: profile.socials.linkedin, icon: FaLinkedinIn, label: "LinkedIn" },
-                { href: profile.socials.instagram, icon: FaInstagram, label: "Instagram" },
-              ].map(({ href, icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface2/50 text-muted transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:text-accent"
-                >
-                  <Icon size={17} />
-                </a>
-              ))}
-            </div>
-            <span className="hidden h-5 w-px bg-line sm:block" />
-            <span className="inline-flex items-center gap-2 text-sm text-muted">
-              <FiMapPin className="text-accent" />
-              {profile.location}
+              {profile.heroHeadline[0]}
             </span>
-          </motion.div>
-        </motion.div>
+          </span>
+          <span className="block overflow-hidden" style={{ paddingBottom: ".05em" }}>
+            <span
+              className="glasstext glasstext-2"
+              style={{
+                animation:
+                  "charIn 1s cubic-bezier(.2,.85,.2,1) .32s both, glassSheen 8s ease-in-out 1.4s infinite",
+              }}
+            >
+              {profile.heroHeadline[1]}
+            </span>
+          </span>
+        </h1>
+
+        <p
+          className="mx-auto mt-[26px] max-w-[30ch] font-mono text-[13px] font-semibold tracking-[0.04em] text-cream"
+          style={{ animation: "fadeUp .8s .55s both" }}
+        >
+          {profile.heroMonoTagline}
+        </p>
+
+        <p
+          className="mx-auto mt-[22px] max-w-[60ch] text-[18px] leading-[1.6] text-muted"
+          style={{ animation: "fadeUp .8s .68s both" }}
+        >
+          {profile.heroTagline}
+        </p>
+
+        <div
+          className="mt-[38px] flex flex-wrap justify-center gap-3.5"
+          style={{ animation: "fadeUp .8s .82s both" }}
+        >
+          <a
+            href="#projetos"
+            data-glass
+            onClick={(e) => {
+              e.preventDefault();
+              go("projetos");
+            }}
+            className="glass-accent inline-flex items-center gap-2.5 rounded-full px-[26px] py-[15px] font-sans text-[15px] font-bold"
+          >
+            Ver projetos
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-[17px] w-[17px]">
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+          </a>
+          <a
+            href={profile.resume}
+            download
+            data-glass
+            className="glass-ghost inline-flex items-center gap-2.5 rounded-full px-6 py-[15px] font-sans text-[15px] font-semibold"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" className="h-[17px] w-[17px]">
+              <path d="M12 3v12" />
+              <path d="m7 12 5 5 5-5" />
+              <path d="M5 21h14" />
+            </svg>
+            Currículo
+          </a>
+        </div>
+
+        <div
+          className="mt-[30px] flex justify-center gap-2.5"
+          style={{ animation: "fadeUp .8s .95s both" }}
+        >
+          {socials.map((s) => (
+            <a
+              key={s.slug}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              className="social-orb"
+            >
+              <span
+                className="mask-icon h-[19px] w-[19px]"
+                style={{ ["--icon" as string]: iconMask(s.slug) }}
+              />
+            </a>
+          ))}
+        </div>
       </div>
 
-      <motion.button
-        onClick={() => scrollTo("sobre")}
-        aria-label="Rolar para baixo"
-        className="absolute bottom-7 left-1/2 -translate-x-1/2 text-muted"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+      <a
+        href="#sobre"
+        aria-label="Rolar"
+        onClick={(e) => {
+          e.preventDefault();
+          go("sobre");
+        }}
+        className="absolute bottom-6 left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2 no-underline"
       >
-        <motion.span
-          className="block"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <FiArrowDown size={20} />
-        </motion.span>
-      </motion.button>
+        <span className="font-mono text-[10px] font-medium tracking-[0.26em] text-faint">
+          SCROLL
+        </span>
+        <span className="anim-cueline block h-[42px] w-px bg-faint" />
+      </a>
     </section>
   );
 }

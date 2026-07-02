@@ -1,80 +1,70 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { FiAward, FiBookOpen, FiCalendar, FiDownload } from "react-icons/fi";
-import SectionHeading from "./SectionHeading";
-import { education, profile } from "@/data/profile";
+import SectionEyebrow from "./SectionEyebrow";
+import { education } from "@/data/profile";
 
 export default function Education() {
   return (
-    <section id="formacao" className="relative scroll-mt-24 py-24 sm:py-32">
-      <div className="container-x">
-        <SectionHeading eyebrow="Formação" title="Formação acadêmica" />
+    <section
+      id="formacao"
+      className="relative mx-auto max-w-[1080px] scroll-mt-[90px] px-6"
+      style={{ paddingTop: 90, paddingBottom: 90 }}
+    >
+      <SectionEyebrow n="06" label="Formação" className="mb-9" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-12 overflow-hidden rounded-3xl border border-line bg-surface"
+      <div
+        data-reveal
+        className="relative overflow-hidden rounded-[20px] border border-line p-10"
+        style={{ background: "linear-gradient(135deg,#1C1812,#161310)" }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute font-display font-black leading-none"
+          style={{
+            top: -40,
+            right: -30,
+            fontSize: 200,
+            color: "rgba(var(--accrgb),.05)",
+          }}
         >
-          <div className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-accent/15 text-accent">
-                  <FiAward size={22} />
-                </span>
-                <span className="rounded-full border border-line bg-surface2 px-3 py-1 text-xs font-medium text-accent">
-                  {education.semester}
-                </span>
-              </div>
+          SI
+        </div>
 
-              <h3 className="mt-5 font-display text-2xl font-semibold text-sand">
-                {education.course}
-              </h3>
-              <p className="mt-1 font-medium text-accent2">{education.institution}</p>
-
-              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-                <span className="inline-flex items-center gap-2">
-                  <FiCalendar className="text-accent" /> {education.period}
-                </span>
-              </div>
-
-              <p className="mt-5 flex items-start gap-2 text-sm leading-relaxed text-muted">
-                <FiBookOpen className="mt-0.5 shrink-0 text-accent" />
-                <span>{education.focus}</span>
-              </p>
+        <div className="relative flex flex-wrap items-start justify-between gap-6">
+          <div className="max-w-[60ch]">
+            <span
+              className="mb-[18px] inline-block rounded-full px-3 py-[5px] font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-acc"
+              style={{ background: "rgba(var(--accrgb),.12)" }}
+            >
+              {education.badge}
+            </span>
+            <h3
+              className="m-0 font-display font-extrabold tracking-[-0.015em]"
+              style={{ fontSize: "clamp(24px,3vw,34px)", lineHeight: 1.12 }}
+            >
+              {education.course}
+            </h3>
+            <div className="mt-2 font-sans text-[15px] font-semibold text-cream">
+              {education.institution}
             </div>
+            <p className="mt-5 text-[15.5px] leading-[1.6] text-muted">
+              {education.focus}
+            </p>
+          </div>
 
-            {/* Bloco de CTA do currículo */}
-            <div className="relative overflow-hidden rounded-2xl border border-line bg-base p-7">
-              <div
-                aria-hidden
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(110% 80% at 100% 0%, rgba(203,184,157,0.16), transparent 60%)",
-                }}
-              />
-              <div className="relative">
-                <h4 className="font-display text-lg font-semibold text-sand">
-                  Quer os detalhes completos?
-                </h4>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Baixe meu currículo em PDF com todo o histórico de experiências,
-                  habilidades técnicas e formação.
-                </p>
-                <a
-                  href={profile.resume}
-                  download
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-sand px-5 py-2.5 text-sm font-semibold text-base transition-transform hover:scale-[1.03]"
-                >
-                  <FiDownload /> Baixar currículo
-                </a>
+          <div className="flex min-w-[160px] flex-col gap-3.5">
+            <div>
+              <div className="mb-1 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-faint">
+                Período
               </div>
+              <div className="font-display text-[17px] font-bold">{education.period}</div>
+            </div>
+            <div>
+              <div className="mb-1 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-faint">
+                Local
+              </div>
+              <div className="font-display text-[17px] font-bold">{education.local}</div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

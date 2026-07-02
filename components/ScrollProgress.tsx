@@ -12,9 +12,13 @@ export default function ScrollProgress() {
 
   return (
     <motion.div
-      className="fixed left-0 top-0 z-[60] h-[2px] w-full origin-left bg-gradient-to-r from-accent2 via-accent to-sand"
-      style={{ scaleX }}
       aria-hidden
+      className="fixed left-0 top-0 z-[90] h-[3px] w-full origin-left"
+      style={{
+        scaleX,
+        background: "linear-gradient(90deg, var(--acc), #ff8a66)",
+        willChange: "transform",
+      }}
     />
   );
 }

@@ -7,7 +7,10 @@ export type ProjectImage = {
 
 export type Project = {
   id: string;
+  /** Título completo (uso interno / acessibilidade) */
   title: string;
+  /** Título curto exibido no card e no modal */
+  shortTitle: string;
   /** Frase curta exibida no card */
   tagline: string;
   /** Descrição completa exibida no modal */
@@ -21,17 +24,15 @@ export type Project = {
   github?: string;
   /** Link do deploy / projeto no ar (deixe "" para esconder o botão) */
   demo?: string;
-  /**
-   * Capa do card na seção Projetos — normalmente um logo/arte do projeto.
-   * Aparece centralizada e inteira (sem cortar) sobre um fundo neutro.
-   * Se você não definir, o card usa a primeira imagem do carrossel como capa.
-   */
-  thumbnail?: string;
-  /**
-   * Imagens do projeto (sem vídeo). Coloque os arquivos em /public/projects/
-   * e referencie aqui. A primeira imagem é usada como capa do card.
-   * Cada imagem tem uma legenda (caption) dizendo qual página/tela é.
-   */
+  /** Capa do card (logo/arte ou 1ª tela) */
+  cover: string;
+  /** Cor de fundo atrás da capa */
+  coverBg: string;
+  /** object-fit da capa: "contain" (logo) ou "cover" (screenshot) */
+  coverFit: "contain" | "cover";
+  /** Padding em volta da capa (ex.: "30px" para logos, "0" para screenshots) */
+  coverPad: string;
+  /** Galeria de imagens exibida no modal (a 1ª é a capa da galeria) */
   images: ProjectImage[];
 };
 
@@ -39,33 +40,34 @@ export type Project = {
  * COMO ADICIONAR UM PROJETO:
  * 1. Coloque as imagens em  public/projects/  (ex.: public/projects/meu-app/tela1.png)
  * 2. Duplique um bloco abaixo e ajuste os campos.
- * 3. Cada imagem é um objeto { src, caption } — a caption aparece no cantinho.
- * 4. O botão "Acessar projeto" usa `demo`; o de código usa `github`.
- * 5. (Opcional) Defina `thumbnail` com o caminho de um logo/arte para ser a
- *    capa do card. Sem ele, o card usa a primeira imagem do carrossel.
- *
- * As imagens com placeholder (.svg) são só para você ver o layout —
- * basta substituir pelos prints reais dos seus projetos.
+ * 3. `cover` é a capa do card; `coverFit`/`coverPad`/`coverBg` controlam como ela aparece.
+ * 4. Cada imagem da galeria é { src, caption } — a caption aparece no cantinho.
+ * 5. O botão "Acessar projeto" usa `demo`; o de código usa `github`.
  */
 export const projects: Project[] = [
   {
     id: "train-bala",
     title: "TrainBala — App de Treino de Hipertrofia com IA",
+    shortTitle: "TrainBala",
     tagline: "Registro de séries e feedback personalizado de treino via IA.",
     description:
       "Aplicativo full-stack para acompanhamento de treinos de hipertrofia: o usuário monta sua divisão semanal, registra cada série (peso, reps e RIR) e, ao finalizar, recebe um feedback gerado por IA (Google Gemini) com score, insights e metas de carga para a próxima sessão. Inclui análise de progresso com gráficos, calendário de histórico e uma aba de guias com aulas por exercício geradas por IA.",
     highlights: [
-      "Feedback de treino por IA (Google Gemini): score, insights e metas automáticas de carga/reps para a próxima sessão",
-      "Análise de progresso filtrável (volume, carga máxima e 1RM estimado por Epley) com gráficos por grupamento e exercício",
-      "Aba Guia com aulas por exercício geradas por IA e cacheadas no banco, mais vídeo via busca no YouTube",
-      "Sessão de treino persistente: cronômetro e séries sobrevivem à navegação e ao reload (web)",
+      "Feedback de treino por IA (Google Gemini): score, insights e metas automáticas de carga/reps",
+      "Análise de progresso filtrável (volume, carga máxima e 1RM estimado por Epley) com gráficos por grupamento",
+      "Aba Guia com aulas por exercício geradas por IA e cacheadas no banco, mais vídeo via YouTube",
+      "Sessão de treino persistente: cronômetro e séries sobrevivem à navegação e ao reload",
       "Autenticação JWT + bcrypt, onboarding em wizard e exercícios personalizados por usuário",
       "Deploy próprio em VM no Google Cloud com Docker Compose (PostgreSQL + Node/Express + Nginx HTTPS)",
     ],
     stack: ["Flutter", "Dart", "Node.js", "Express", "PostgreSQL", "Docker", "Nginx", "Google Gemini", "JWT"],
     year: "2026",
     demo: "https://34.39.173.247",
-    // thumbnail: "/projects/train-bala/logo.png", // descomente após adicionar o logo
+    github: "",
+    cover: "/projects/train-bala/logo.png",
+    coverBg: "#14120E",
+    coverFit: "contain",
+    coverPad: "30px",
     images: [
       { src: "/projects/train-bala/tela1.png", caption: "Login na conta" },
       { src: "/projects/train-bala/tela2.png", caption: "Início — resumo dos últimos 7 dias e treino do dia" },
@@ -78,36 +80,31 @@ export const projects: Project[] = [
       { src: "/projects/train-bala/tela9.png", caption: "Aula do exercício gerada por IA com vídeo no YouTube" },
       { src: "/projects/train-bala/tela10.png", caption: "Perfil — dados físicos e divisão de treino semanal" },
     ],
-
   },
 
   {
     id: "ritter",
     title: "Ritter&Co — Sistema de Gestão para Clínica Estética",
-    tagline:
-      "Plataforma fullstack de agendamento, financeiro e dashboards para uma clínica de estética.",
+    shortTitle: "Ritter&Co",
+    tagline: "Agendamento, financeiro e dashboards com controle de concorrência.",
     description:
       "Sistema completo de gestão para a clínica da Dra. Camila Ritter (Biomédica Esteta): agendamento de procedimentos em calendário, controle de caixa e painéis analíticos. O backend aplica transações de banco e controle de concorrência otimista (versionamento de registros) para garantir consistência mesmo com acessos simultâneos — ex.: dois usuários editando o mesmo agendamento, onde o segundo recebe um conflito (HTTP 409) em vez de sobrescrever dados.",
     highlights: [
       "Controle de concorrência otimista (campo de versão) — conflitos retornam HTTP 409 em vez de corromper dados",
       "Transações de banco orquestradas: agendar reserva o horário e cria o registro de forma atômica (commit/rollback)",
-      "Dashboards de gestão (estilo BI): faturamento por mês/procedimento/forma de pagamento, ticket médio e extrato de caixa",
+      "Dashboards de gestão (estilo BI): faturamento por mês/procedimento/forma de pagamento, ticket médio e extrato",
       "Conclusão de procedimento que registra valor + forma de pagamento na mesma transação",
       "Autenticação com JWT + bcrypt e hardening da API (Helmet, rate limiting, CORS)",
       "Interface mobile-first com tema próprio, calendário mensal e exportação de extrato em PDF",
     ],
-    stack: [
-      "React",
-      "Vite",
-      "Material UI",
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "JWT",
-    ],
+    stack: ["React", "Vite", "Material UI", "Node.js", "Express", "PostgreSQL", "JWT"],
     year: "2026",
     demo: "",
-    // thumbnail: "/projects/gestao-clinica/logo.png", // descomente após adicionar o logo
+    github: "",
+    cover: "/projects/gestao-clinica/logo.png",
+    coverBg: "#F1ECE3",
+    coverFit: "contain",
+    coverPad: "34px",
     images: [
       { src: "/projects/gestao-clinica/tela1.png", caption: "Início — visão geral e próximo agendamento" },
       { src: "/projects/gestao-clinica/tela2.png", caption: "Calendário e histórico de atendimentos" },
@@ -118,29 +115,32 @@ export const projects: Project[] = [
   },
 
   {
-
     id: "alugueis-alzira",
     title: "Alzira Ritter — Aluguéis de Verão",
-    tagline: "Site institucional de temporada para apartamentos em Capão da Canoa/RS.",
+    shortTitle: "Alzira Ritter",
+    tagline: "Landing institucional de aluguel de temporada em Capão da Canoa/RS.",
     description:
       "Landing page institucional (front-end estático, sem servidor ou banco de dados) para divulgar apartamentos de aluguel de temporada em Capão da Canoa/RS. Apresenta cada imóvel com galeria de fotos, comodidades, diferenciais e mapa embarcado, com toda a negociação direcionada ao WhatsApp. Conteúdo (textos, fotos e contatos) centralizado em um único arquivo de dados para facilitar a manutenção pela proprietária.",
     highlights: [
       "Seção por apartamento com carrossel de fotos (Embla) com miniaturas, contador e lightbox fullscreen",
-      "Mapa do Google Maps embarcado (sem chave de API) e botão 'Aernativa",
+      "Mapa do Google Maps embarcado (sem chave de API) e botão de rota alternativa",
       "Animações de entrada por scroll com Framer Motion e botão flutuante de WhatsApp em todas as telas",
-      "Conteúdo 100% editável em um único arquivo (apartments.js):s e lista de fotos",
+      "Conteúdo 100% editável em um único arquivo (apartments.js): textos e lista de fotos",
       "Design system próprio com paleta azul-petróleo + dourado, tipografia e layout responsivo com menu mobile",
       "Valores 'sob consulta' com CTAs que abrem conversa pré-preenchida",
     ],
     stack: ["React", "Vite", "JavaScript", "Framer Motion", "Vercel"],
     year: "2026",
     demo: "https://alziraalugueis.vercel.app/",
-    // thumbnail: "/projects/alugueis-alzira/logo.png", // descomente após adicionar o logo
+    github: "",
+    cover: "/projects/alugueis-alzira/tela1.png",
+    coverBg: "#1E1B16",
+    coverFit: "cover",
+    coverPad: "0",
     images: [
-      { src: "/projects/alugueis-alzira/tela1.png", caption: "" },
-      { src: "/projects/alugueis-alzira/tela2.png", caption: "" },
-      { src: "/projects/alugueis-alzira/tela3.png", caption: "" },
-
+      { src: "/projects/alugueis-alzira/tela1.png", caption: "Hero — temporada de verão à beira-mar" },
+      { src: "/projects/alugueis-alzira/tela2.png", caption: "Apartamento — galeria de fotos e comodidades" },
+      { src: "/projects/alugueis-alzira/tela3.png", caption: "Localização e contato direto via WhatsApp" },
     ],
   },
 ];

@@ -1,131 +1,201 @@
 "use client";
 
-import { motion } from "framer-motion";
-import {
-  FiMail,
-  FiPhone,
-  FiMapPin,
-  FiArrowUpRight,
-} from "react-icons/fi";
-import { FaGithub, FaLinkedinIn, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import FooterParticles from "./FooterParticles";
 import { profile } from "@/data/profile";
+import { contactLinks, iconMask } from "./socials";
 
-const whatsappLink = `https://wa.me/55${profile.phone.replace(/\D/g, "")}`;
-
-const socials = [
-  { href: profile.socials.github, icon: FaGithub, label: "GitHub" },
-  { href: profile.socials.linkedin, icon: FaLinkedinIn, label: "LinkedIn" },
-  { href: profile.socials.instagram, icon: FaInstagram, label: "Instagram" },
-];
+const footMarquee =
+  "FULL-STACK ✦ FRONT-END ✦ BACK-END ✦ MOBILE ✦ CLOUD ✦ IA ✦ COMUNICAÇÃO ✦ CÓDIGO LIMPO ✦ RITMO ✦ SOLUÇÕES REAIS ✦ ";
 
 export default function Contact() {
+  const backToTop = () => {
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
-    <footer id="contato" className="relative scroll-mt-24 overflow-hidden pt-24 sm:pt-32">
-      {/* Brilho de fundo */}
+    <section
+      id="contato"
+      className="relative mt-16 overflow-hidden border-t border-line scroll-mt-[90px]"
+      style={{ padding: "54px 0 0" }}
+    >
+      {/* bg: grid */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80"
+        className="pointer-events-none absolute inset-0 z-0"
         style={{
-          background:
-            "radial-gradient(60% 100% at 50% 0%, rgba(203,184,157,0.12), transparent 70%)",
+          backgroundSize: "58px 58px",
+          backgroundImage:
+            "linear-gradient(to right,rgba(244,239,230,.038) 1px,transparent 1px),linear-gradient(to bottom,rgba(244,239,230,.038) 1px,transparent 1px)",
+          WebkitMaskImage:
+            "radial-gradient(74% 68% at 50% 42%,#000 26%,transparent 82%)",
+          maskImage:
+            "radial-gradient(74% 68% at 50% 42%,#000 26%,transparent 82%)",
         }}
       />
+      {/* bg: aurora */}
+      <div
+        aria-hidden
+        className="anim-aurora pointer-events-none absolute left-1/2 top-[42%] z-0 rounded-full"
+        style={{
+          width: "min(1120px,124vw)",
+          height: "76%",
+          transform: "translate(-50%,-50%)",
+          filter: "blur(74px)",
+          background:
+            "radial-gradient(circle at 50% 50%,rgba(var(--accrgb),.16) 0%,rgba(62,123,255,.09) 44%,transparent 70%)",
+        }}
+      />
+      {/* bg: partículas */}
+      <FooterParticles />
+      {/* bg: nome gigante */}
+      <div
+        id="footname"
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 bottom-[1.5%] z-0 select-none whitespace-nowrap font-display font-black"
+        style={{
+          transform: "translateX(-50%)",
+          fontSize: "clamp(42px,11vw,138px)",
+          lineHeight: 0.8,
+          letterSpacing: "-0.04em",
+          color: "transparent",
+          WebkitTextFillColor: "transparent",
+          WebkitTextStroke: "1px rgba(244,239,230,.06)",
+          background: "linear-gradient(180deg,rgba(244,239,230,.12),transparent 60%)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+        }}
+      >
+        JOÃO VITOR RITTER
+      </div>
 
-      <div className="container-x">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <span className="eyebrow justify-center">
-            <span className="h-px w-8 bg-accent/60" aria-hidden />
-            Contato
-          </span>
-          <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-sand sm:text-5xl md:text-6xl">
-            Tem alguma ideia ou sugestão?
-            <span className="block text-gradient">Bora conversar.</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted">
-            Seja para o desenvolvimento de um aplicativo, a estruturação de um sistema
-            ou uma oportunidade de equipe, estou à disposição para conversar.
-          </p>
-
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={`mailto:${profile.email}`}
-              className="group inline-flex items-center gap-2 rounded-full bg-sand px-6 py-3 text-sm font-semibold text-base transition-transform hover:scale-[1.03]"
+      {/* marquee band */}
+      <div
+        aria-hidden
+        className="relative z-[2] w-full overflow-hidden border-y border-line backdrop-blur-[8px] backdrop-saturate-[1.3]"
+        style={{ background: "rgba(21,18,14,.42)", padding: "15px 0" }}
+      >
+        <div id="mqf" className="flex whitespace-nowrap will-change-transform">
+          {[0, 1].map((k) => (
+            <span
+              key={k}
+              className="font-mono text-[13px] font-bold uppercase tracking-[0.32em] text-[#8b857c]"
+              style={{ paddingRight: "0.4em" }}
             >
-              <FiMail /> {profile.email}
-            </a>
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface2/60 px-6 py-3 text-sm font-semibold text-sand transition-all hover:border-accent/50"
-            >
-              <FaWhatsapp className="text-accent" /> WhatsApp
-              <FiArrowUpRight className="opacity-60 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-        </motion.div>
-
-        {/* Cards de contato */}
-        <div className="mx-auto mt-14 grid max-w-3xl gap-4 sm:grid-cols-3">
-          {[
-            { icon: FiMail, label: "E-mail", value: profile.email, href: `mailto:${profile.email}` },
-            { icon: FiPhone, label: "Telefone", value: profile.phone, href: whatsappLink },
-            { icon: FiMapPin, label: "Localização", value: "Santa Maria — RS", href: undefined },
-          ].map(({ icon: Icon, label, value, href }) => {
-            const inner = (
-              <div className="flex h-full flex-col items-center gap-2 rounded-2xl border border-line bg-surface px-4 py-6 text-center transition-colors hover:border-accent/30">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/15 text-accent">
-                  <Icon size={18} />
+              {footMarquee.split("✦").map((part, i, arr) => (
+                <span key={i}>
+                  {part}
+                  {i < arr.length - 1 && <span className="text-acc">✦</span>}
                 </span>
-                <span className="text-xs uppercase tracking-wider text-faint">{label}</span>
-                <span className="text-sm font-medium text-sand">{value}</span>
-              </div>
-            );
-            return href ? (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer">
-                {inner}
-              </a>
-            ) : (
-              <div key={label}>{inner}</div>
-            );
-          })}
-        </div>
-
-        {/* Rodapé */}
-        <div className="mt-20 flex flex-col items-center gap-6 border-t border-line py-8 sm:flex-row sm:justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-xl border border-line bg-surface2 font-display text-sm font-bold text-accent">
-              JR
+              ))}
             </span>
-            <span className="text-sm text-muted">
-              © {new Date().getFullYear()} {profile.fullName}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {socials.map(({ href, icon: Icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface2/50 text-muted transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:text-accent"
-              >
-                <Icon size={16} />
-              </a>
-            ))}
-          </div>
-
-          <p className="text-xs text-faint">Feito com Next.js, Tailwind & Framer Motion.</p>
+          ))}
         </div>
       </div>
-    </footer>
+
+      {/* conteúdo */}
+      <div className="relative z-[2] mx-auto max-w-[1120px]" style={{ padding: "104px 24px 62px" }}>
+        <div data-reveal>
+          <div className="mb-[26px] flex items-center gap-3">
+            <span className="font-mono text-[12px] font-bold text-acc">07</span>
+            <span className="font-mono text-[12px] font-semibold uppercase tracking-[0.2em] text-muted2">
+              Contato
+            </span>
+            <span className="h-px max-w-[120px] flex-1 bg-line" />
+          </div>
+          <h2
+            className="m-0 font-display font-black tracking-[-0.028em]"
+            style={{ fontSize: "clamp(46px,9vw,112px)", lineHeight: 0.9 }}
+          >
+            <span className="block overflow-hidden" style={{ paddingBottom: ".06em" }}>
+              <span className="glasstext glasstext-1 anim-glass-sheen">Bora</span>
+            </span>
+            <span className="block overflow-hidden" style={{ paddingBottom: ".06em" }}>
+              <span
+                className="glasstext glasstext-2"
+                style={{ animation: "glassSheen 8s ease-in-out .3s infinite" }}
+              >
+                conversar?
+              </span>
+            </span>
+          </h2>
+          <p className="mt-[26px] max-w-[46ch] text-[17px] leading-[1.6] text-muted">
+            Tô sempre a fim de um bom projeto ou uma boa conversa. Me chama pelo canal que preferir — costumo responder rápido.
+          </p>
+          <a
+            href={`mailto:${profile.email}`}
+            className="link-email mt-[22px] inline-block pb-1 font-sans font-semibold text-soft"
+            style={{ fontSize: "clamp(20px,3.4vw,34px)" }}
+          >
+            {profile.email}
+          </a>
+        </div>
+
+        <div data-reveal className="mt-10 flex flex-wrap gap-3">
+          {contactLinks.map((s) => (
+            <a
+              key={s.slug}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-glass
+              data-magnet
+              className="contact-chip inline-flex items-center gap-[11px] rounded-full px-[22px] py-3.5"
+            >
+              <span
+                className="mask-icon h-[19px] w-[19px] shrink-0"
+                style={{ ["--icon" as string]: iconMask(s.slug) }}
+              />
+              <span className="font-sans text-[14px] font-bold">{s.label}</span>
+            </a>
+          ))}
+          <a
+            href={profile.resume}
+            download
+            data-glass
+            data-magnet
+            className="contact-chip contact-chip-accent inline-flex items-center gap-2.5 rounded-full px-6 py-3.5"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" className="h-[18px] w-[18px]">
+              <path d="M12 3v12" />
+              <path d="m7 12 5 5 5-5" />
+              <path d="M5 21h14" />
+            </svg>
+            <span className="font-sans text-[14px] font-extrabold">Baixar currículo</span>
+          </a>
+        </div>
+      </div>
+
+      {/* bottom bar */}
+      <div className="relative z-[2] mx-auto flex max-w-[1120px] flex-wrap items-center justify-between gap-4 border-t border-line" style={{ padding: "26px 24px 40px" }}>
+        <span className="font-display text-[13px] font-semibold tracking-[0.01em] text-cream">
+          © {new Date().getFullYear()} {profile.fullName}
+        </span>
+        <span
+          data-glass
+          className="badge-chip inline-flex items-center gap-2 rounded-full px-4 py-[9px]"
+          style={{ cursor: "default" }}
+        >
+          <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8b857c]">
+            feito com <span className="text-acc">café</span> e criatividade
+          </span>
+        </span>
+        <button
+          onClick={backToTop}
+          data-glass
+          data-magnet
+          aria-label="Voltar ao topo"
+          className="back-top grid h-[46px] w-[46px] place-items-center rounded-full"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-[19px] w-[19px]">
+            <path d="M12 19V5" />
+            <path d="m5 12 7-7 7 7" />
+          </svg>
+        </button>
+      </div>
+    </section>
   );
 }
