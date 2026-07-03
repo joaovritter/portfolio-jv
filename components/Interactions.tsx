@@ -197,26 +197,23 @@ export default function Interactions() {
       const clamp = (v: number, lo: number, hi: number) =>
         Math.max(lo, Math.min(hi, v));
 
-      // base > 0 desloca para a esquerda; base < 0 para a direita
-      type MConf = { el: HTMLElement; base: number; skew: number };
+      // base > 0 desloca para a esquerda; base < 0 para a direita (auto-scroll)
+      type MConf = { el: HTMLElement; base: number; skew: number; phase: number };
       const confs: MConf[] = [];
       const push = (id: string, base: number, skew: number) => {
         const el = document.getElementById(id);
-        if (el) confs.push({ el, base, skew });
+        if (el) confs.push({ el, base, skew, phase: 0 });
       };
       push("mq1", 0.55, 0.22);
       push("mq2", -0.5, -0.22);
       push("mqf", 0.4, 0.16);
 
-      // estado por marquee: posição acumulada (px)
-      const pos = new Map<HTMLElement, number>();
-      confs.forEach((c) => pos.set(c.el, 0));
-
-      // arraste + momentum compartilhados (uma "roleta" só)
+      // arraste + inércia compartilhados: "off" é o deslocamento de tela que o
+      // usuário puxou; "offVel" é a velocidade que continua após soltar (roleta).
+      let off = 0;
+      let offVel = 0;
       let dragging = false;
-      let dragDX = 0; // delta de pixels acumulado desde o último frame
-      let vel = 0; // velocidade suavizada durante o arraste (px/frame)
-      let mom = 0; // momentum aplicado após soltar (decai)
+      let dragDX = 0; // pixels acumulados desde o último frame
       let lastY = window.scrollY || 0;
       let raf = 0;
 
@@ -230,20 +227,17 @@ export default function Interactions() {
         dragging = true;
         lastX = e.clientX;
         dragDX = 0;
-        vel = 0;
-        mom = 0;
+        offVel = 0;
         document.body.classList.add("mq-grabbing");
       };
       const onMove = (e: PointerEvent) => {
         if (!dragging) return;
-        const dx = e.clientX - lastX;
+        dragDX += e.clientX - lastX;
         lastX = e.clientX;
-        dragDX += dx;
       };
       const onUp = () => {
         if (!dragging) return;
         dragging = false;
-        mom = vel; // solta e desliza com inércia
         document.body.classList.remove("mq-grabbing");
       };
       window.addEventListener("pointerdown", onDown);
@@ -251,34 +245,33 @@ export default function Interactions() {
       window.addEventListener("pointerup", onUp);
       window.addEventListener("pointercancel", onUp);
 
+      // wrap para (-w, 0]: mantém a faixa sempre coberta (sem espaço em branco)
+      const wrapNeg = (v: number, w: number) => -(((v % w) + w) % w);
+
       const loop = () => {
         const y = window.scrollY || document.documentElement.scrollTop || 0;
         const vy = y - lastY;
         lastY = y;
 
-        // arraste: transfere delta para a posição e mede a velocidade
-        let dragThisFrame = 0;
         if (dragging) {
-          dragThisFrame = dragDX;
+          // as palavras seguem o mouse 1:1; velocidade suavizada p/ o momentum
+          off += dragDX;
+          offVel = offVel * 0.6 + dragDX * 0.4;
           dragDX = 0;
-          vel = vel * 0.6 + dragThisFrame * 0.4; // velocidade suavizada
         } else {
-          mom *= 0.94; // atrito da "roleta": desacelera gradual
-          if (Math.abs(mom) < 0.02) mom = 0;
+          off += offVel;
+          offVel *= 0.94; // atrito da roleta: desacelera gradualmente
+          if (Math.abs(offVel) < 0.02) offVel = 0;
         }
 
         confs.forEach((c) => {
-          const w = c.el.scrollWidth / 2 || 1;
-          // avanço automático + impulso do scroll + arraste/momentum (px de tela)
-          let p = pos.get(c.el)!;
-          const auto = c.base * (1 + Math.abs(vy) * 0.9);
-          p += auto - dragThisFrame - mom;
-          pos.set(c.el, p);
-          // wrap contínuo em [-w, 0]
-          let t = p % w;
-          if (t > 0) t -= w;
+          const one = (c.el.firstElementChild as HTMLElement | null)?.offsetWidth;
+          const w = one && one > 0 ? one : c.el.scrollWidth / 3 || 1;
+          c.phase += c.base * (1 + Math.abs(vy) * 0.9);
+          // puxar para a esquerda (off<0) move a faixa para a esquerda
+          const t = wrapNeg(c.phase - off, w);
           const scrollSk = clamp(-Math.sign(c.base) * vy * c.skew, -9, 9);
-          const dragSk = clamp((dragThisFrame + mom) * 0.14, -10, 10);
+          const dragSk = clamp((dragging ? dragDX : offVel) * 0.14, -10, 10);
           c.el.style.transform = `translateX(${t}px) skewX(${scrollSk + dragSk}deg)`;
         });
 

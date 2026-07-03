@@ -79,7 +79,7 @@ export default function Contact() {
         style={{ background: "rgba(21,18,14,.42)", padding: "15px 0", touchAction: "pan-y" }}
       >
         <div id="mqf" className="flex whitespace-nowrap will-change-transform">
-          {[0, 1].map((k) => (
+          {[0, 1, 2].map((k) => (
             <span
               key={k}
               className="font-mono text-[13px] font-bold uppercase tracking-[0.32em] text-[#8b857c]"
