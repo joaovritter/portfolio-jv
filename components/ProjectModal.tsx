@@ -14,6 +14,7 @@ export default function ProjectModal({
   onClose: () => void;
 }) {
   const [index, setIndex] = useState(0);
+  const [zoom, setZoom] = useState(false);
   const images = project?.images ?? [];
   const total = images.length;
 
@@ -22,6 +23,7 @@ export default function ProjectModal({
 
   useEffect(() => {
     setIndex(0);
+    setZoom(false);
   }, [project]);
 
   useEffect(() => {
@@ -36,17 +38,20 @@ export default function ProjectModal({
   useEffect(() => {
     if (!project) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") next();
+      if (e.key === "Escape") {
+        if (zoom) setZoom(false);
+        else onClose();
+      } else if (e.key === "ArrowRight") next();
       else if (e.key === "ArrowLeft") prev();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [project, next, prev, onClose]);
+  }, [project, next, prev, onClose, zoom]);
 
   const cur = images[index];
 
   return (
+    <>
     <AnimatePresence>
       {project && (
         <motion.div
@@ -93,9 +98,20 @@ export default function ProjectModal({
                 <img
                   src={cur?.src}
                   alt={cur?.caption || project.shortTitle}
-                  className="max-h-full max-w-full object-contain"
+                  onClick={() => cur?.src && setZoom(true)}
+                  className="max-h-full max-w-full cursor-zoom-in object-contain"
                   style={{ width: "auto", height: "auto" }}
                 />
+                <button
+                  onClick={() => cur?.src && setZoom(true)}
+                  aria-label="Ver em tela cheia"
+                  className="modal-nav absolute bottom-3.5 right-3.5 grid h-[38px] w-[38px] place-items-center rounded-full border border-line text-sand backdrop-blur-[8px]"
+                  style={{ background: "rgba(19,17,14,.55)" }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-[17px] w-[17px]">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3" />
+                  </svg>
+                </button>
                 {total > 1 && (
                   <>
                     <button
@@ -234,5 +250,75 @@ export default function ProjectModal({
         </motion.div>
       )}
     </AnimatePresence>
+
+    {/* Lightbox / tela cheia */}
+    <AnimatePresence>
+      {project && zoom && cur?.src && (
+        <motion.div
+          onClick={() => setZoom(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22 }}
+          className="fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-8"
+          style={{ background: "rgba(6,5,4,.94)" }}
+        >
+          <button
+            onClick={() => setZoom(false)}
+            aria-label="Fechar tela cheia"
+            className="modal-close absolute right-4 top-4 z-[5] grid h-11 w-11 place-items-center rounded-full border border-line text-sand backdrop-blur-[8px]"
+            style={{ background: "rgba(19,17,14,.6)" }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <motion.img
+            key={cur.src}
+            src={cur.src}
+            alt={cur.caption || project.shortTitle}
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.26, ease: [0.2, 0.8, 0.2, 1] }}
+            className="max-h-[92vh] max-w-[94vw] cursor-zoom-out object-contain"
+          />
+
+          {total > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); prev(); }}
+                aria-label="Anterior"
+                className="modal-nav absolute left-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line text-sand backdrop-blur-[8px]"
+                style={{ background: "rgba(19,17,14,.55)" }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-5 w-5">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); next(); }}
+                aria-label="Próxima"
+                className="modal-nav absolute right-4 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-line text-sand backdrop-blur-[8px]"
+                style={{ background: "rgba(19,17,14,.55)" }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-5 w-5">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+              <span
+                className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full px-3 py-[6px] font-mono text-[12px] font-semibold text-cream backdrop-blur-[8px]"
+                style={{ background: "rgba(19,17,14,.6)" }}
+              >
+                {pad(index + 1)} / {pad(total)}
+              </span>
+            </>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }

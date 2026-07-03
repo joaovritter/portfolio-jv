@@ -699,3 +699,9 @@ a {
     transform: none !important;
   }
 }
+
+/* estado "arrastando" das faixas (marquees) */
+body.mq-grabbing,
+body.mq-grabbing * {
+  cursor: grabbing !important;
+}

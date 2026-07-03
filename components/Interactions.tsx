@@ -190,53 +190,114 @@ export default function Interactions() {
       }
     }
 
-    /* ---------- marquees + parallax do nome gigante ---------- */
+    /* ---------- marquees (com arraste + inércia) + parallax do nome ---------- */
     if (!reduce) {
-      const mq1 = document.getElementById("mq1");
-      const mq2 = document.getElementById("mq2");
-      const mqf = document.getElementById("mqf");
       const fname = document.getElementById("footname");
       const foot = document.getElementById("contato");
-      let mx = 0,
-        mx2 = 0,
-        mxf = 0,
-        lastY = window.scrollY || 0,
-        raf = 0;
       const clamp = (v: number, lo: number, hi: number) =>
         Math.max(lo, Math.min(hi, v));
+
+      // base > 0 desloca para a esquerda; base < 0 para a direita
+      type MConf = { el: HTMLElement; base: number; skew: number };
+      const confs: MConf[] = [];
+      const push = (id: string, base: number, skew: number) => {
+        const el = document.getElementById(id);
+        if (el) confs.push({ el, base, skew });
+      };
+      push("mq1", 0.55, 0.22);
+      push("mq2", -0.5, -0.22);
+      push("mqf", 0.4, 0.16);
+
+      // estado por marquee: posição acumulada (px)
+      const pos = new Map<HTMLElement, number>();
+      confs.forEach((c) => pos.set(c.el, 0));
+
+      // arraste + momentum compartilhados (uma "roleta" só)
+      let dragging = false;
+      let dragDX = 0; // delta de pixels acumulado desde o último frame
+      let vel = 0; // velocidade suavizada durante o arraste (px/frame)
+      let mom = 0; // momentum aplicado após soltar (decai)
+      let lastY = window.scrollY || 0;
+      let raf = 0;
+
+      const targets = confs.map((c) => c.el);
+      const isMarquee = (t: EventTarget | null) =>
+        t instanceof Node && targets.some((el) => el.contains(t as Node));
+
+      let lastX = 0;
+      const onDown = (e: PointerEvent) => {
+        if (e.button !== 0 || !isMarquee(e.target)) return;
+        dragging = true;
+        lastX = e.clientX;
+        dragDX = 0;
+        vel = 0;
+        mom = 0;
+        document.body.classList.add("mq-grabbing");
+      };
+      const onMove = (e: PointerEvent) => {
+        if (!dragging) return;
+        const dx = e.clientX - lastX;
+        lastX = e.clientX;
+        dragDX += dx;
+      };
+      const onUp = () => {
+        if (!dragging) return;
+        dragging = false;
+        mom = vel; // solta e desliza com inércia
+        document.body.classList.remove("mq-grabbing");
+      };
+      window.addEventListener("pointerdown", onDown);
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", onUp);
+
       const loop = () => {
         const y = window.scrollY || document.documentElement.scrollTop || 0;
         const vy = y - lastY;
         lastY = y;
-        if (mq1) {
-          const w = mq1.scrollWidth / 2 || 1;
-          mx += 0.55 + Math.abs(vy) * 0.5;
-          const sk = clamp(-vy * 0.22, -9, 9);
-          mq1.style.transform = `translateX(${-(mx % w)}px) skewX(${sk}deg)`;
+
+        // arraste: transfere delta para a posição e mede a velocidade
+        let dragThisFrame = 0;
+        if (dragging) {
+          dragThisFrame = dragDX;
+          dragDX = 0;
+          vel = vel * 0.6 + dragThisFrame * 0.4; // velocidade suavizada
+        } else {
+          mom *= 0.94; // atrito da "roleta": desacelera gradual
+          if (Math.abs(mom) < 0.02) mom = 0;
         }
-        if (mq2) {
-          const w = mq2.scrollWidth / 2 || 1;
-          mx2 += 0.5 + Math.abs(vy) * 0.5;
-          const sk = clamp(vy * 0.22, -9, 9);
-          mq2.style.transform = `translateX(${(mx2 % w) - w}px) skewX(${sk}deg)`;
-        }
-        if (mqf) {
-          const w = mqf.scrollWidth / 2 || 1;
-          mxf += 0.4 + Math.abs(vy) * 0.42;
-          const sk = clamp(-vy * 0.16, -7, 7);
-          mqf.style.transform = `translateX(${-(mxf % w)}px) skewX(${sk}deg)`;
-        }
+
+        confs.forEach((c) => {
+          const w = c.el.scrollWidth / 2 || 1;
+          // avanço automático + impulso do scroll + arraste/momentum (px de tela)
+          let p = pos.get(c.el)!;
+          const auto = c.base * (1 + Math.abs(vy) * 0.9);
+          p += auto - dragThisFrame - mom;
+          pos.set(c.el, p);
+          // wrap contínuo em [-w, 0]
+          let t = p % w;
+          if (t > 0) t -= w;
+          const scrollSk = clamp(-Math.sign(c.base) * vy * c.skew, -9, 9);
+          const dragSk = clamp((dragThisFrame + mom) * 0.14, -10, 10);
+          c.el.style.transform = `translateX(${t}px) skewX(${scrollSk + dragSk}deg)`;
+        });
+
         if (fname && foot) {
           const r = foot.getBoundingClientRect();
           const vh = window.innerHeight || 1;
-          const p = clamp((vh - r.top) / (vh + r.height), 0, 1);
-          fname.style.transform = `translate(-50%,${((0.5 - p) * 52).toFixed(1)}px)`;
+          const pr = clamp((vh - r.top) / (vh + r.height), 0, 1);
+          fname.style.transform = `translate(-50%,${((0.5 - pr) * 52).toFixed(1)}px)`;
         }
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
       cleanups.push(() => {
         if (raf) cancelAnimationFrame(raf);
+        window.removeEventListener("pointerdown", onDown);
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        window.removeEventListener("pointercancel", onUp);
+        document.body.classList.remove("mq-grabbing");
       });
     }
 

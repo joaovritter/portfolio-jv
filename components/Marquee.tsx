@@ -25,7 +25,8 @@ export default function Marquee() {
   return (
     <section
       aria-hidden
-      className="relative z-[2] overflow-hidden border-y border-line bg-bg2 py-[30px]"
+      className="relative z-[2] cursor-grab select-none overflow-hidden border-y border-line bg-bg2 py-[30px]"
+      style={{ touchAction: "pan-y" }}
     >
       <div id="mq1" className="flex whitespace-nowrap will-change-transform">
         <span className="font-display font-black" style={strokeStyle}>

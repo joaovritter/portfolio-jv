@@ -5,7 +5,7 @@ import { profile } from "@/data/profile";
 import { contactLinks, iconMask } from "./socials";
 
 const footMarquee =
-  "FULL-STACK ✦ FRONT-END ✦ BACK-END ✦ MOBILE ✦ CLOUD ✦ IA ✦ COMUNICAÇÃO ✦ CÓDIGO LIMPO ✦ RITMO ✦ SOLUÇÕES REAIS ✦ ";
+  "FULL-STACK ✦ FRONT-END ✦ BACK-END ✦ MOBILE ✦ CLOUD ✦ IA ✦ COMUNICAÇÃO ✦ CÓDIGO LIMPO ✦ SOLUÇÕES REAIS ✦ ";
 
 export default function Contact() {
   const backToTop = () => {
@@ -55,7 +55,7 @@ export default function Contact() {
       <div
         id="footname"
         aria-hidden
-        className="pointer-events-none absolute left-1/2 bottom-[1.5%] z-0 select-none whitespace-nowrap font-display font-black"
+        className="pointer-events-none absolute left-1/2 bottom-[150px] sm:bottom-[118px] z-0 select-none whitespace-nowrap font-display font-black"
         style={{
           transform: "translateX(-50%)",
           fontSize: "clamp(42px,11vw,138px)",
@@ -75,8 +75,8 @@ export default function Contact() {
       {/* marquee band */}
       <div
         aria-hidden
-        className="relative z-[2] w-full overflow-hidden border-y border-line backdrop-blur-[8px] backdrop-saturate-[1.3]"
-        style={{ background: "rgba(21,18,14,.42)", padding: "15px 0" }}
+        className="relative z-[2] w-full cursor-grab select-none overflow-hidden border-y border-line backdrop-blur-[8px] backdrop-saturate-[1.3]"
+        style={{ background: "rgba(21,18,14,.42)", padding: "15px 0", touchAction: "pan-y" }}
       >
         <div id="mqf" className="flex whitespace-nowrap will-change-transform">
           {[0, 1].map((k) => (
