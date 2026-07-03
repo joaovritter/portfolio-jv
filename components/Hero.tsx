@@ -48,7 +48,10 @@ export default function Hero() {
             letterSpacing: "-0.02em",
           }}
         >
-          <span className="block overflow-hidden" style={{ paddingBottom: ".05em" }}>
+          <span
+            className="block"
+            style={{ overflow: "clip", overflowClipMargin: "0.6em", paddingBottom: ".05em" }}
+          >
             <span
               className="glasstext glasstext-1"
               style={{
@@ -59,7 +62,10 @@ export default function Hero() {
               {profile.heroHeadline[0]}
             </span>
           </span>
-          <span className="block overflow-hidden" style={{ paddingBottom: ".05em" }}>
+          <span
+            className="block"
+            style={{ overflow: "clip", overflowClipMargin: "0.6em", paddingBottom: ".05em" }}
+          >
             <span
               className="glasstext glasstext-2"
               style={{
@@ -73,15 +79,22 @@ export default function Hero() {
         </h1>
 
         <p
-          className="mx-auto mt-[26px] max-w-[30ch] font-mono text-[13px] font-semibold tracking-[0.04em] text-cream"
-          style={{ animation: "fadeUp .8s .55s both" }}
+          className="mx-auto mt-[26px] whitespace-nowrap font-mono font-semibold tracking-[0.02em] text-cream"
+          style={{
+            fontSize: "clamp(7px, 2.1vw, 13px)",
+            textShadow: "0 1px 10px rgba(0,0,0,.6)",
+            animation: "fadeUp .8s .55s both",
+          }}
         >
           {profile.heroMonoTagline}
         </p>
 
         <p
-          className="mx-auto mt-[22px] max-w-[60ch] text-[18px] leading-[1.6] text-muted"
-          style={{ animation: "fadeUp .8s .68s both" }}
+          className="mx-auto mt-[22px] max-w-[60ch] text-[18px] leading-[1.6] text-soft"
+          style={{
+            textShadow: "0 1px 14px rgba(0,0,0,.5)",
+            animation: "fadeUp .8s .68s both",
+          }}
         >
           {profile.heroTagline}
         </p>

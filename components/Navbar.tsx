@@ -79,7 +79,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed left-1/2 top-4 z-[80] flex max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-3.5 rounded-full border border-line py-2 pl-4 pr-2 backdrop-blur-[18px] backdrop-saturate-150 transition-[background,box-shadow] duration-[400ms]"
+        className="nav-shell fixed left-1/2 top-4 z-[80] flex max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-3.5 rounded-full py-2 pl-4 pr-2 transition-[background,box-shadow] duration-[400ms]"
         style={{
           background: scrolled ? "rgba(24,21,16,.74)" : "rgba(24,21,16,.30)",
           boxShadow: scrolled

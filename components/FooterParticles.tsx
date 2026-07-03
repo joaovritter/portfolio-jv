@@ -19,6 +19,10 @@ export default function FooterParticles() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const motion = 1;
+    // --- Ajustes do hover (mexa nestes números) ---
+    const PUSH = 1.2; // força do empurrão do cursor (menor = mais sutil)
+    const RETURN = 0.0045; // rigidez da mola de volta (menor = volta mais devagar)
+    const HOVER_CALM = 0.45; // agitação durante o hover (1 = normal, 0 = parado)
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let W = host.clientWidth,
       H = host.clientHeight;
@@ -40,7 +44,8 @@ export default function FooterParticles() {
       baseY = new Float32Array(N),
       amp = new Float32Array(N),
       ph = new Float32Array(N),
-      sp = new Float32Array(N);
+      sp = new Float32Array(N),
+      react = new Float32Array(N);
     for (let i = 0; i < N; i++) {
       baseX[i] = (Math.random() - 0.5) * W * 0.96;
       baseY[i] = (Math.random() - 0.5) * H * 0.84;
@@ -50,6 +55,8 @@ export default function FooterParticles() {
       amp[i] = 12 + Math.random() * 30;
       ph[i] = Math.random() * Math.PI * 2;
       sp[i] = 0.5 + Math.random() * 0.8;
+      // 0 = ponto imune ao cursor; senão reage com força variável (borda irregular)
+      react[i] = Math.random() < 0.35 ? 0 : 0.25 + Math.random() * 0.75;
     }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
@@ -93,28 +100,32 @@ export default function FooterParticles() {
     const rad = isMobile ? 66 : 104;
     let raf = 0;
     let inView = false;
+    let calm = 1; // eased: cai para HOVER_CALM enquanto o mouse está em cima
     const tick = () => {
       const time = performance.now();
       const P = geo.attributes.position.array as Float32Array;
+      calm += ((mouse.on ? HOVER_CALM : 1) - calm) * 0.05;
       for (let i = 0; i < N; i++) {
         const ix = i * 3,
           iy = i * 3 + 1,
           iz = i * 3 + 2;
-        const a = amp[i] * motion;
+        const a = amp[i] * motion * calm;
         const tx = baseX[i] + Math.sin(time * 0.0002 * sp[i] + ph[i]) * a;
         const ty = baseY[i] + Math.cos(time * 0.00017 * sp[i] + ph[i] * 1.3) * a;
-        vel[ix] += (tx - P[ix]) * 0.006;
-        vel[iy] += (ty - P[iy]) * 0.006;
+        vel[ix] += (tx - P[ix]) * RETURN;
+        vel[iy] += (ty - P[iy]) * RETURN;
         vel[iz] += (0 - P[iz]) * 0.005;
-        if (mouse.on) {
+        if (mouse.on && react[i]) {
           const dx = P[ix] - mouse.x,
             dy = P[iy] - mouse.y;
           const d2 = dx * dx + dy * dy;
           if (d2 < rad * rad) {
             const dd = Math.sqrt(d2) || 1;
-            const f = (rad - dd) / rad;
-            vel[ix] += (dx / dd) * f * 1.7;
-            vel[iy] += (dy / dd) * f * 1.7;
+            let f = (rad - dd) / rad;
+            f = f * f; // borda mais suave (menos "círculo nítido")
+            const push = f * react[i] * PUSH;
+            vel[ix] += (dx / dd) * push;
+            vel[iy] += (dy / dd) * push;
           }
         }
         vel[ix] *= 0.94;

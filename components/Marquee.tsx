@@ -11,7 +11,7 @@ const Star = () => <span className="text-acc">&nbsp;✦&nbsp;</span>;
 function Row2Text() {
   return (
     <>
-      RITMO
+      COMUNICAÇÃO
       <Star />
       CÓDIGO LIMPO
       <Star />
