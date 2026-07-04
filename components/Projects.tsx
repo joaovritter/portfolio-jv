@@ -23,7 +23,6 @@ function StackCard({
   index,
   total,
   offset,
-  lift,
   progress,
   onOpen,
   cardRef,
@@ -32,17 +31,15 @@ function StackCard({
   index: number;
   total: number;
   offset: number;
-  lift: number;
   progress: MotionValue<number>;
   onOpen: () => void;
   cardRef: (el: HTMLDivElement | null) => void;
 }) {
   // empilhado (progress 0) -> espalhado (progress 1), reversível.
-  // No estado fechado: só a borda (PEEK) de cada carta aparece abaixo do topo,
-  // e todo o deck fica levantado (lift) sobre o título.
+  // No estado fechado: só a borda (PEEK) de cada carta aparece abaixo do topo.
   const y = useTransform(progress, (p) => {
     const t = easeOutCubic(clamp(p, 0, 1));
-    const stacked = -offset + index * PEEK - lift;
+    const stacked = -offset + index * PEEK;
     return stacked * (1 - t);
   });
   const scale = useTransform(progress, (p) => {
@@ -140,29 +137,24 @@ function StackCard({
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const cardEls = useRef<(HTMLDivElement | null)[]>([]);
   const [offsets, setOffsets] = useState<number[]>(() =>
     projects.map((_, i) => i * 560)
   );
-  const [lift, setLift] = useState(240);
   const [selected, setSelected] = useState<Project | null>(null);
 
-  // Deck fechado enquanto o título repousa no centro; espalha ao rolar além dele.
+  // Deck fechado enquanto entra; espalha conforme rola pela seção.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start center", "start start"],
+    offset: ["start 0.75", "start 0.15"],
   });
 
-  // Mede a posição natural de cada carta + o quanto levantar o deck sobre o título
+  // Mede a posição natural de cada carta para calcular o empilhamento
   useEffect(() => {
     const measure = () => {
       const tops = cardEls.current.map((el) => el?.offsetTop ?? 0);
       const base = tops[0] ?? 0;
       setOffsets(tops.map((t) => t - base));
-      const hTop = headingRef.current?.offsetTop ?? 0;
-      // levanta o primeiro card até cobrir o topo do título (+ folga)
-      setLift(Math.max(140, base - hTop + 24));
     };
     measure();
     window.addEventListener("resize", measure);
@@ -178,7 +170,6 @@ export default function Projects() {
     >
       <SectionEyebrow n="05" label="Projetos selecionados" className="mb-3.5" />
       <h2
-        ref={headingRef}
         data-reveal
         className="relative z-0 m-0 max-w-[16ch] font-display font-black tracking-[-0.02em]"
         style={{ fontSize: "clamp(30px,5vw,56px)", lineHeight: 1.02 }}
@@ -206,7 +197,6 @@ export default function Projects() {
             index={i}
             total={projects.length}
             offset={offsets[i] ?? i * 560}
-            lift={lift}
             progress={scrollYProgress}
             onOpen={() => setSelected(p)}
             cardRef={(el) => {
