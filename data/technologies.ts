@@ -4,6 +4,8 @@ export type Tech = {
   color: string;
   /** Slug do Simple Icons (https://cdn.simpleicons.org/<slug>). Vazio = usa glyph */
   slug?: string;
+  /** URL completa de um ícone (ex.: devicon). Tem prioridade sobre o slug. */
+  icon?: string;
   /** Sigla de fallback caso o ícone não carregue */
   short?: string;
   /** Texto exibido quando não há ícone (ex.: "API", "AWS") */
@@ -16,9 +18,15 @@ export type TechGroup = {
   items: Tech[];
 };
 
-/** URL do ícone no Simple Icons (colorido) */
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
+
+/** URL do ícone: devicon (icon) tem prioridade; senão Simple Icons colorido */
 export const techIconUrl = (t: Tech) =>
-  t.slug ? `https://cdn.simpleicons.org/${t.slug}/${t.color.replace("#", "")}` : "";
+  t.icon
+    ? t.icon
+    : t.slug
+    ? `https://cdn.simpleicons.org/${t.slug}/${t.color.replace("#", "")}`
+    : "";
 
 export const techGroups: TechGroup[] = [
   {
@@ -30,7 +38,7 @@ export const techGroups: TechGroup[] = [
       { name: "Vue.js", color: "#42B883", slug: "vuedotjs", short: "Vu" },
       { name: "React Native", color: "#61DAFB", slug: "react", short: "RN" },
       { name: "Flutter", color: "#54C5F8", slug: "flutter", short: "Fl" },
-      { name: "Dart", color: "#0175C2", slug: "dart", short: "Da" },
+      { name: "Dart", color: "#0175C2", icon: `${DEVICON}/dart/dart-original.svg`, short: "Da" },
       { name: "TypeScript", color: "#3178C6", slug: "typescript", short: "TS" },
       { name: "JavaScript", color: "#F7DF1E", slug: "javascript", short: "JS" },
       { name: "HTML5", color: "#E34F26", slug: "html5", short: "H5" },
@@ -44,8 +52,8 @@ export const techGroups: TechGroup[] = [
     items: [
       { name: "Node.js", color: "#5FA04E", slug: "nodedotjs", short: "No" },
       { name: "NestJS", color: "#E0234E", slug: "nestjs", short: "Ne" },
-      { name: "Java", color: "#E76F00", slug: "openjdk", short: "Ja" },
-      { name: "Spring Boot", color: "#6DB33F", slug: "springboot", short: "Sb" },
+      { name: "Java", color: "#EA2D2E", icon: `${DEVICON}/java/java-original.svg`, short: "Ja" },
+      { name: "Spring Boot", color: "#6DB33F", icon: `${DEVICON}/spring/spring-original.svg`, short: "Sb" },
       { name: "Python", color: "#FFD43B", slug: "python", short: "Py" },
       { name: "APIs REST", color: "#CBB89D", short: "Ap", glyph: "API" },
     ],
@@ -64,7 +72,7 @@ export const techGroups: TechGroup[] = [
     label: "Cloud & DevOps",
     hint: "Infra & nuvem",
     items: [
-      { name: "AWS", color: "#FF9900", short: "AW", glyph: "AWS" },
+      { name: "AWS", color: "#FF9900", icon: `${DEVICON}/amazonwebservices/amazonwebservices-original-wordmark.svg`, short: "AW", glyph: "AWS" },
       { name: "Google Cloud", color: "#4285F4", slug: "googlecloud", short: "GC" },
       { name: "Docker", color: "#2496ED", slug: "docker", short: "Dk" },
       { name: "Linux", color: "#FCC624", slug: "linux", short: "Lx" },

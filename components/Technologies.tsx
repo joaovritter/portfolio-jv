@@ -23,7 +23,7 @@ function TechItem({ t }: { t: Tech }) {
           />
         ) : (
           <span className="tech-glyph font-mono text-[12px] font-bold tracking-[0.02em]">
-            {t.slug ? t.short : t.glyph}
+            {t.slug || t.icon ? t.short : t.glyph}
           </span>
         )}
       </span>
