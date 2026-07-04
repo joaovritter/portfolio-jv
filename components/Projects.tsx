@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import ProjectModal from "./ProjectModal";
+import { ContainerScroll } from "./ui/container-scroll-animation";
 import { tiltMove, tiltLeave } from "./tilt";
 import { projects, type Project } from "@/data/projects";
 
@@ -187,22 +188,24 @@ export default function Projects() {
         Role para desempilhar os cartões — clique em qualquer um para abrir a galeria de telas.
       </p>
 
-      <div className="flex flex-col gap-6">
-        {projects.map((p, i) => (
-          <StackCard
-            key={p.id}
-            project={p}
-            index={i}
-            total={projects.length}
-            offset={offsets[i] ?? i * 560}
-            progress={scrollYProgress}
-            onOpen={() => setSelected(p)}
-            cardRef={(el) => {
-              cardEls.current[i] = el;
-            }}
-          />
-        ))}
-      </div>
+      <ContainerScroll>
+        <div className="flex flex-col gap-6">
+          {projects.map((p, i) => (
+            <StackCard
+              key={p.id}
+              project={p}
+              index={i}
+              total={projects.length}
+              offset={offsets[i] ?? i * 560}
+              progress={scrollYProgress}
+              onOpen={() => setSelected(p)}
+              cardRef={(el) => {
+                cardEls.current[i] = el;
+              }}
+            />
+          ))}
+        </div>
+      </ContainerScroll>
 
       <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </section>
