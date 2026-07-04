@@ -260,7 +260,7 @@ export default function Interactions() {
           dragDX = 0;
         } else {
           off += offVel;
-          offVel *= 0.94; // atrito da roleta: desacelera gradualmente
+          offVel *= 0.965; // atrito da roleta: desacelera gradualmente
           if (Math.abs(offVel) < 0.02) offVel = 0;
         }
 
@@ -268,8 +268,7 @@ export default function Interactions() {
           const one = (c.el.firstElementChild as HTMLElement | null)?.offsetWidth;
           const w = one && one > 0 ? one : c.el.scrollWidth / 3 || 1;
           c.phase += c.base * (1 + Math.abs(vy) * 0.9);
-          // puxar para a esquerda (off<0) move a faixa para a esquerda
-          const t = wrapNeg(c.phase - off, w);
+          const t = wrapNeg(c.phase + off, w);
           const scrollSk = clamp(-Math.sign(c.base) * vy * c.skew, -9, 9);
           const dragSk = clamp((dragging ? dragDX : offVel) * 0.14, -10, 10);
           c.el.style.transform = `translateX(${t}px) skewX(${scrollSk + dragSk}deg)`;
