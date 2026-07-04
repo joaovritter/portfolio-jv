@@ -43,7 +43,7 @@ export default function About() {
                 opacity: 0.6,
               }}
             />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[14px] border border-line bg-surface2">
+            <div className="edu-card relative aspect-[4/5] overflow-hidden rounded-[14px] border border-line bg-surface2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/eu.jpeg"
@@ -100,7 +100,7 @@ export default function About() {
               {profile.softSkills.map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-line bg-surface2 px-3.5 py-2 text-[13px] font-medium text-cream"
+                  className="soft-chip rounded-full border border-line bg-surface2 px-3.5 py-2 text-[13px] font-medium text-cream"
                 >
                   {s}
                 </span>

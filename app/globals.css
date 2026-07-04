@@ -564,7 +564,11 @@ a {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
     border-color 0.4s, box-shadow 0.4s;
 }
-.edu-card::after {
+.shine-border {
+  position: relative;
+}
+.edu-card::after,
+.shine-border::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -594,7 +598,8 @@ a {
     0 0 0 1px rgba(var(--accrgb), 0.12),
     0 0 44px -18px rgba(var(--accrgb), 0.4);
 }
-.edu-card:hover::after {
+.edu-card:hover::after,
+.shine-border:hover::after {
   animation: shineSweep 1.5s linear 1;
 }
 
@@ -653,6 +658,56 @@ a {
   background: rgba(var(--accrgb), 0.1);
   color: #f4efe6;
   transform: translateY(-2px);
+}
+
+/* ---- Soft skills: entrada em cascata + hover ---- */
+@keyframes softPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.soft-chip {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.3s, background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+[data-reveal]:not(.reveal-in) .soft-chip {
+  opacity: 0;
+  transform: translateY(12px);
+}
+[data-reveal].reveal-in .soft-chip {
+  animation: softPop 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+[data-reveal].reveal-in .soft-chip:nth-child(1) { animation-delay: 0.04s; }
+[data-reveal].reveal-in .soft-chip:nth-child(2) { animation-delay: 0.09s; }
+[data-reveal].reveal-in .soft-chip:nth-child(3) { animation-delay: 0.14s; }
+[data-reveal].reveal-in .soft-chip:nth-child(4) { animation-delay: 0.19s; }
+[data-reveal].reveal-in .soft-chip:nth-child(5) { animation-delay: 0.24s; }
+[data-reveal].reveal-in .soft-chip:nth-child(6) { animation-delay: 0.29s; }
+[data-reveal].reveal-in .soft-chip:nth-child(7) { animation-delay: 0.34s; }
+[data-reveal].reveal-in .soft-chip:nth-child(8) { animation-delay: 0.39s; }
+[data-reveal].reveal-in .soft-chip:nth-child(9) { animation-delay: 0.44s; }
+[data-reveal].reveal-in .soft-chip:nth-child(n + 10) { animation-delay: 0.49s; }
+.soft-chip:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--accrgb), 0.55) !important;
+  background: rgba(var(--accrgb), 0.1) !important;
+  color: #fff;
+  box-shadow: 0 12px 26px -14px rgba(var(--accrgb), 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal]:not(.reveal-in) .soft-chip {
+    opacity: 1;
+    transform: none;
+  }
+  [data-reveal].reveal-in .soft-chip {
+    animation: none;
+  }
 }
 
 /* ============================================================

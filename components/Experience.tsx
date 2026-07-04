@@ -35,7 +35,7 @@ export default function Experience() {
             <div
               onMouseMove={tiltMove}
               onMouseLeave={tiltLeave}
-              className="exp-card rounded-2xl"
+              className="exp-card shine-border rounded-2xl"
               style={{ padding: "26px 28px" }}
             >
               <div className="mb-1.5 flex flex-wrap items-center gap-3">
