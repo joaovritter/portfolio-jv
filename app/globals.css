@@ -598,6 +598,28 @@ a {
   animation: shineSweep 1.5s linear 1;
 }
 
+/* Surgir genérico (charIn do Hero) disparado ao entrar em tela via reveal */
+.rise-clip {
+  overflow: clip;
+  overflow-clip-margin: 0.18em;
+  display: inline-block;
+}
+.reveal-rise {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(118%) rotate(2deg);
+}
+[data-reveal].reveal-in .reveal-rise {
+  animation: charIn 1.05s cubic-bezier(0.2, 0.85, 0.2, 1) 0.1s both,
+    glassSheen 8s ease-in-out 1.2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-rise {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .edu-si-wrap {
   overflow: clip;
   overflow-clip-margin: 0.15em;

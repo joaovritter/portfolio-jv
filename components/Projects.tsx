@@ -9,13 +9,12 @@ import {
 } from "framer-motion";
 import SectionEyebrow from "./SectionEyebrow";
 import ProjectModal from "./ProjectModal";
-import { ContainerScroll } from "./ui/container-scroll-animation";
 import { tiltMove, tiltLeave } from "./tilt";
 import { projects, type Project } from "@/data/projects";
 
-const PEEK = 18; // afastamento vertical entre cartas empilhadas
-const SCALE_STEP = 0.05; // cada carta abaixo fica um pouco menor
-const ROT = 3; // leque sutil no baralho
+const PEEK = 14; // sliver (borda) visível de cada carta atrás do topo
+const LIFT = 210; // deck começa levantado, cobrindo o título
+const SCALE_STEP = 0.018; // profundidade sutil no baralho fechado
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
@@ -37,21 +36,18 @@ function StackCard({
   onOpen: () => void;
   cardRef: (el: HTMLDivElement | null) => void;
 }) {
-  // stacked (progress 0) -> desempilhado (progress 1), reversível
+  // empilhado (progress 0) -> espalhado (progress 1), reversível.
+  // No estado fechado: só a borda (PEEK) de cada carta aparece abaixo do topo,
+  // e todo o deck fica levantado (LIFT) sobre o título.
   const y = useTransform(progress, (p) => {
     const t = easeOutCubic(clamp(p, 0, 1));
-    const stacked = -offset + index * PEEK;
+    const stacked = -offset + index * PEEK - LIFT;
     return stacked * (1 - t);
   });
   const scale = useTransform(progress, (p) => {
     const t = easeOutCubic(clamp(p, 0, 1));
     const s = 1 - index * SCALE_STEP;
     return s + (1 - s) * t;
-  });
-  const rotate = useTransform(progress, (p) => {
-    const t = easeOutCubic(clamp(p, 0, 1));
-    const r = index === 0 ? 0 : index % 2 ? ROT : -ROT;
-    return r * (1 - t);
   });
 
   const stackTop = project.stack.slice(0, 4);
@@ -60,7 +56,7 @@ function StackCard({
   return (
     <motion.div
       ref={cardRef}
-      style={{ y, scale, rotate, zIndex: total - index }}
+      style={{ y, scale, zIndex: total - index }}
       className="relative mx-auto w-full max-w-[620px]"
     >
       <article
@@ -176,36 +172,40 @@ export default function Projects() {
       <SectionEyebrow n="05" label="Projetos selecionados" className="mb-3.5" />
       <h2
         data-reveal
-        className="m-0 max-w-[16ch] font-display font-black tracking-[-0.02em]"
+        className="relative z-0 m-0 max-w-[16ch] font-display font-black tracking-[-0.02em]"
         style={{ fontSize: "clamp(30px,5vw,56px)", lineHeight: 1.02 }}
       >
-        Conheça meus projetos
+        <span className="rise-clip">
+          <span className="reveal-rise glasstext glasstext-1">Conheça meus</span>
+        </span>
+        <br />
+        <span className="rise-clip">
+          <span className="reveal-rise glasstext glasstext-2">projetos</span>
+        </span>
       </h2>
       <p
         data-reveal
-        className="mb-[54px] mt-4 max-w-[54ch] text-[16px] leading-[1.6] text-[#8b857c]"
+        className="relative z-0 mb-[54px] mt-4 max-w-[54ch] text-[16px] leading-[1.6] text-[#8b857c]"
       >
         Role para desempilhar os cartões — clique em qualquer um para abrir a galeria de telas.
       </p>
 
-      <ContainerScroll>
-        <div className="flex flex-col gap-6">
-          {projects.map((p, i) => (
-            <StackCard
-              key={p.id}
-              project={p}
-              index={i}
-              total={projects.length}
-              offset={offsets[i] ?? i * 560}
-              progress={scrollYProgress}
-              onOpen={() => setSelected(p)}
-              cardRef={(el) => {
-                cardEls.current[i] = el;
-              }}
-            />
-          ))}
-        </div>
-      </ContainerScroll>
+      <div className="flex flex-col gap-6">
+        {projects.map((p, i) => (
+          <StackCard
+            key={p.id}
+            project={p}
+            index={i}
+            total={projects.length}
+            offset={offsets[i] ?? i * 560}
+            progress={scrollYProgress}
+            onOpen={() => setSelected(p)}
+            cardRef={(el) => {
+              cardEls.current[i] = el;
+            }}
+          />
+        ))}
+      </div>
 
       <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </section>
