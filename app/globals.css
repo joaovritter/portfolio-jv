@@ -559,6 +559,80 @@ a {
   animation-duration: 0.45s;
 }
 
+/* ---- Card de formação: brilho na borda (igual nav) + surgir do "SI" ---- */
+.edu-card {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.4s, box-shadow 0.4s;
+}
+.edu-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px; /* espessura do rastro de luz */
+  pointer-events: none;
+  z-index: 3;
+  background: conic-gradient(
+    from var(--shine-angle),
+    transparent 0deg 200deg,
+    rgba(var(--accrgb), 0.45) 285deg,
+    rgba(255, 255, 255, 0.95) 320deg,
+    rgba(var(--accrgb), 0.45) 355deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.edu-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--acc) 34%, transparent);
+  box-shadow: 0 26px 60px -30px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(var(--accrgb), 0.12),
+    0 0 44px -18px rgba(var(--accrgb), 0.4);
+}
+.edu-card:hover::after {
+  animation: shineSweep 1.5s linear 1;
+}
+
+.edu-si-wrap {
+  overflow: clip;
+  overflow-clip-margin: 0.15em;
+  display: inline-block;
+}
+.edu-si {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(118%) rotate(3deg);
+}
+[data-reveal].reveal-in .edu-si {
+  animation: charIn 1.05s cubic-bezier(0.2, 0.85, 0.2, 1) 0.15s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .edu-si {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.edu-chip {
+  border: 1px solid var(--line);
+  background: rgba(244, 239, 230, 0.04);
+  transition: border-color 0.3s, background 0.3s, color 0.3s, transform 0.3s;
+}
+.edu-card:hover .edu-chip {
+  border-color: color-mix(in srgb, var(--acc) 28%, transparent);
+}
+.edu-chip:hover {
+  border-color: rgba(var(--accrgb), 0.6);
+  background: rgba(var(--accrgb), 0.1);
+  color: #f4efe6;
+  transform: translateY(-2px);
+}
+
 /* ============================================================
    Tecnologias — item com recolor no hover (--tc por item)
    ============================================================ */

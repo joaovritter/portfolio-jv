@@ -58,4 +58,11 @@ export const education = {
   badge: "Em andamento · 7º semestre",
   focus:
     "Desenvolvimento de software, lógica de programação, arquitetura de sistemas de informação e banco de dados.",
+  logo: "/UFN.png",
+  highlights: [
+    "Arquitetura de sistemas",
+    "Banco de dados",
+    "Estruturas de dados & lógica",
+    "Engenharia de software",
+  ],
 };
