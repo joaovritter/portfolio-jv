@@ -110,10 +110,10 @@ export default function Contact() {
             className="m-0 font-display font-black tracking-[-0.028em]"
             style={{ fontSize: "clamp(46px,9vw,112px)", lineHeight: 0.9 }}
           >
-            <span className="block overflow-hidden" style={{ paddingBottom: ".06em" }}>
+            <span className="block" style={{ overflow: "clip", overflowClipMargin: "0.6em", paddingBottom: ".06em" }}>
               <span className="glasstext glasstext-1 anim-glass-sheen">Bora</span>
             </span>
-            <span className="block overflow-hidden" style={{ paddingBottom: ".06em" }}>
+            <span className="block" style={{ overflow: "clip", overflowClipMargin: "0.6em", paddingBottom: ".06em" }}>
               <span
                 className="glasstext glasstext-2"
                 style={{ animation: "glassSheen 8s ease-in-out .3s infinite" }}

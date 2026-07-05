@@ -606,7 +606,7 @@ a {
 /* Surgir genérico (charIn do Hero) disparado ao entrar em tela via reveal */
 .rise-clip {
   overflow: clip;
-  overflow-clip-margin: 0.18em;
+  overflow-clip-margin: 0.6em;
   display: inline-block;
 }
 .reveal-rise {
