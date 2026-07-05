@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/data/profile";
+import SmoothScroll from "@/components/SmoothScroll";
 
 // Display / headings
 const archivo = Archivo({
@@ -68,7 +69,9 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${archivo.variable} ${hanken.variable} ${mono.variable}`}
     >
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }
