@@ -1,6 +1,5 @@
 "use client";
 
-import FooterParticles from "./FooterParticles";
 import { profile } from "@/data/profile";
 import { contactLinks, iconMask } from "./socials";
 
@@ -22,35 +21,6 @@ export default function Contact() {
       className="relative mt-16 overflow-hidden border-t border-line scroll-mt-[90px]"
       style={{ padding: "54px 0 0" }}
     >
-      {/* bg: grid */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          backgroundSize: "58px 58px",
-          backgroundImage:
-            "linear-gradient(to right,rgba(244,239,230,.038) 1px,transparent 1px),linear-gradient(to bottom,rgba(244,239,230,.038) 1px,transparent 1px)",
-          WebkitMaskImage:
-            "radial-gradient(74% 68% at 50% 42%,#000 26%,transparent 82%)",
-          maskImage:
-            "radial-gradient(74% 68% at 50% 42%,#000 26%,transparent 82%)",
-        }}
-      />
-      {/* bg: aurora */}
-      <div
-        aria-hidden
-        className="anim-aurora pointer-events-none absolute left-1/2 top-[42%] z-0 rounded-full"
-        style={{
-          width: "min(1120px,124vw)",
-          height: "76%",
-          transform: "translate(-50%,-50%)",
-          filter: "blur(74px)",
-          background:
-            "radial-gradient(circle at 50% 50%,rgba(var(--accrgb),.16) 0%,rgba(62,123,255,.09) 44%,transparent 70%)",
-        }}
-      />
-      {/* bg: partículas */}
-      <FooterParticles />
       {/* bg: nome gigante */}
       <div
         id="footname"

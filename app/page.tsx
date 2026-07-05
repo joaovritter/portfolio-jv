@@ -1,3 +1,4 @@
+import SiteBackground from "@/components/SiteBackground";
 import ScrollProgress from "@/components/ScrollProgress";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -25,9 +26,10 @@ export default function Home() {
         overflowX: "clip",
       }}
     >
+      <SiteBackground />
       <ScrollProgress />
       <Navbar />
-      <main className="relative">
+      <main className="relative z-[1]">
         <Hero />
         <Marquee />
         <About />
