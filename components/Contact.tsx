@@ -123,7 +123,7 @@ export default function Contact() {
             </span>
           </h2>
           <p className="mt-[26px] max-w-[46ch] text-[17px] leading-[1.6] text-muted">
-            Tô sempre a fim de um bom projeto ou uma boa conversa. Me chama pelo canal que preferir — costumo responder rápido.
+            Tô sempre a fim de um bom projeto ou uma boa conversa. Me chama pelo canal que preferir, costumo responder rápido.
           </p>
           <a
             href={`mailto:${profile.email}`}
