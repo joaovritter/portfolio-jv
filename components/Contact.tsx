@@ -140,17 +140,17 @@ export default function Contact() {
       </div>
 
       {/* bottom bar */}
-      <div className="relative z-[2] mx-auto flex max-w-[1120px] flex-wrap items-center justify-between gap-4 border-t border-line" style={{ padding: "26px 24px 40px" }}>
-        <span className="font-display text-[13px] font-semibold tracking-[0.01em] text-cream">
+      <div className="relative z-[2] mx-auto flex max-w-[1120px] flex-wrap items-center justify-between gap-4 border-t border-line sm:grid sm:grid-cols-3" style={{ padding: "26px 24px 40px" }}>
+        <span className="font-display text-[13px] font-semibold tracking-[0.01em] text-cream sm:justify-self-start">
           © {new Date().getFullYear()} {profile.fullName}
         </span>
         <span
           data-glass
-          className="badge-chip inline-flex items-center gap-2 rounded-full px-4 py-[9px]"
+          className="badge-chip inline-flex items-center gap-2 rounded-full px-4 py-[9px] sm:justify-self-center"
           style={{ cursor: "default" }}
         >
           <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8b857c]">
-            feito com <span className="text-acc">café</span> e criatividade
+            feito com <span className="text-acc align-center">café</span> e criatividade
           </span>
         </span>
         <button
@@ -158,7 +158,7 @@ export default function Contact() {
           data-glass
           data-magnet
           aria-label="Voltar ao topo"
-          className="back-top grid h-[46px] w-[46px] place-items-center rounded-full"
+          className="back-top grid h-[46px] w-[46px] place-items-center rounded-full sm:justify-self-end"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-[19px] w-[19px]">
             <path d="M12 19V5" />
