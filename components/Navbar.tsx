@@ -3,15 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/data/profile";
 import { socials, iconMask } from "./socials";
+import { goToSection, sections } from "./sections";
 
-const links = [
-  { id: "hero", label: "Início" },
-  { id: "sobre", label: "Sobre" },
-  { id: "experiencia", label: "Experiência" },
-  { id: "tecnologias", label: "Stack" },
-  { id: "projetos", label: "Projetos" },
-  { id: "formacao", label: "Formação" },
-];
+const links = sections.filter((s) => s.id !== "contato");
 
 const sectionIds = [
   "hero",
@@ -25,6 +19,7 @@ const sectionIds = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState("hero");
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -33,9 +28,16 @@ export default function Navbar() {
 
   // Estado de rolagem + seção ativa
   useEffect(() => {
+    let lastY = window.scrollY || 0;
     const onScroll = () => {
       const y = window.scrollY || document.documentElement.scrollTop || 0;
       setScrolled(y > 40);
+      // esconde ao descer, revela ao subir (nunca no topo nem com menu aberto)
+      const dy = y - lastY;
+      if (Math.abs(dy) > 6) {
+        setHidden(dy > 0 && y > 220);
+        lastY = y;
+      }
       let act = "hero";
       for (const id of sectionIds) {
         const el = document.getElementById(id);
@@ -73,14 +75,19 @@ export default function Navbar() {
 
   const go = (id: string) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    goToSection(id);
   };
 
   return (
     <>
       <nav
-        className="nav-shell fixed left-1/2 top-4 z-[80] flex max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-3.5 rounded-full py-2 pl-4 pr-2 transition-[background,box-shadow] duration-[400ms]"
+        className="nav-shell fixed left-1/2 top-4 z-[80] flex max-w-[calc(100vw-24px)] items-center gap-3.5 rounded-full py-2 pl-4 pr-2 transition-[background,box-shadow,transform,opacity] duration-[450ms] ease-[cubic-bezier(.2,.8,.2,1)]"
         style={{
+          transform:
+            hidden && !open
+              ? "translateX(-50%) translateY(-140%) scale(.94)"
+              : "translateX(-50%) translateY(0) scale(1)",
+          opacity: hidden && !open ? 0 : 1,
           background: scrolled ? "rgba(24,21,16,.74)" : "rgba(24,21,16,.30)",
           boxShadow: scrolled
             ? "0 12px 36px -18px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.14)"

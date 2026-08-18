@@ -856,3 +856,179 @@ body.mq-grabbing,
 body.mq-grabbing * {
   cursor: grabbing !important;
 }
+
+/* ============================================================
+   Cortina de transição entre blocos (<SectionTransition/>)
+   ============================================================ */
+.curtain-panel {
+  background: linear-gradient(180deg, #1c1813 0%, #13110e 60%, #0f0d0b 100%);
+  box-shadow: inset -1px 0 0 rgba(244, 239, 230, 0.045),
+    inset 0 1px 0 rgba(var(--accrgb), 0.16);
+  will-change: transform;
+}
+
+/* ============================================================
+   Dock flutuante (<FloatingDock/>)
+   ============================================================ */
+.dock-main,
+.dock-btn {
+  position: relative;
+  color: #cfc7ba;
+  background: radial-gradient(
+      120px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, calc(0.2 * var(--spec, 0))),
+      transparent 62%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 48%),
+    rgba(24, 21, 16, 0.72);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid rgba(244, 239, 230, 0.13);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 18px 40px -22px rgba(0, 0, 0, 0.9);
+  transition: color 0.3s, border-color 0.35s, box-shadow 0.35s, background 0.35s;
+}
+.dock-main {
+  color: #f4efe6;
+}
+.dock-btn:hover,
+.dock-main:hover {
+  color: #fff;
+  border-color: rgba(var(--accrgb), 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    0 0 0 1px rgba(var(--accrgb), 0.25),
+    0 16px 40px -16px rgba(var(--accrgb), 0.55);
+}
+.dock-btn .mask-icon,
+.dock-main .mask-icon {
+  background: currentColor;
+}
+.dock-tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  white-space: nowrap;
+  padding: 6px 11px;
+  border-radius: 9px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #f4efe6;
+  background: rgba(24, 21, 16, 0.92);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dock-btn:hover .dock-tip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+@media (max-width: 640px) {
+  .dock-tip {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Transição entre blocos ligada ao scroll (scroll-driven CSS)
+   Cada <section> entra com fade/blur/escala e sai desfocando.
+   Só ativa onde há suporte a animation-timeline — nos demais
+   navegadores o [data-reveal] continua cuidando da entrada.
+   ============================================================ */
+@keyframes blockIn {
+  from {
+    opacity: 0;
+    transform: translateY(46px) scale(0.975);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+@keyframes blockOut {
+  from {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0.25;
+    transform: translateY(-34px) scale(0.985);
+    filter: blur(4px);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-flow > section[id]:not(#hero) {
+      animation: blockIn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 62%;
+    }
+    /* saída suave só nas seções internas (hero e contato ficam firmes) */
+    .section-flow > section[id]:not(#hero):not(#contato)::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(19, 17, 14, 0.9), rgba(19, 17, 14, 0));
+      opacity: 0;
+      animation: blockVeil linear both;
+      animation-timeline: view();
+      animation-range: exit 20% exit 100%;
+    }
+  }
+}
+@keyframes blockVeil {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.55;
+  }
+}
+
+/* Fio luminoso entre blocos */
+.section-flow > section[id]:not(#hero):not(#contato)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1100px, 86vw);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--accrgb), 0.45),
+    rgba(244, 239, 230, 0.12),
+    transparent
+  );
+  opacity: 0.6;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-flow > section[id]:not(#hero):not(#contato)::before {
+      animation: threadIn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+@keyframes threadIn {
+  from {
+    opacity: 0;
+    width: 0;
+  }
+  to {
+    opacity: 0.6;
+    width: min(1100px, 86vw);
+  }
+}

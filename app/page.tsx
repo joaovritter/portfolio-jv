@@ -10,6 +10,8 @@ import Projects from "@/components/Projects";
 import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Interactions from "@/components/Interactions";
+import SectionTransition from "@/components/SectionTransition";
+import FloatingDock from "@/components/FloatingDock";
 
 export default function Home() {
   return (
@@ -29,7 +31,9 @@ export default function Home() {
       <SiteBackground />
       <ScrollProgress />
       <Navbar />
-      <main className="relative z-[1]">
+      <SectionTransition />
+      <FloatingDock />
+      <main className="relative z-[1] section-flow">
         <Hero />
         <Marquee />
         <About />
