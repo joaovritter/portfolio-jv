@@ -46,9 +46,9 @@ export type Project = {
  */
 export const projects: Project[] = [
   {
-    id: "train-bala",
-    title: "TrainBala — App de Treino de Hipertrofia com IA",
-    shortTitle: "TrainBala",
+    id: "trainna",
+    title: "Trainna — App de Treino de Hipertrofia com IA",
+    shortTitle: "Trainna",
     tagline: "Registro de séries e feedback personalizado de treino via IA.",
     description:
       "Aplicativo full-stack para acompanhamento de treinos de hipertrofia: o usuário monta sua divisão semanal, registra cada série (peso, reps e RIR) e, ao finalizar, recebe um feedback gerado por IA (Google Gemini) com score, insights e metas de carga para a próxima sessão. Inclui análise de progresso com gráficos, calendário de histórico e uma aba de guias com aulas por exercício geradas por IA.",
@@ -62,7 +62,7 @@ export const projects: Project[] = [
     ],
     stack: ["Flutter", "Dart", "Node.js", "Express", "PostgreSQL", "Docker", "Nginx", "Google Gemini", "JWT"],
     year: "2026",
-    demo: "https://34.39.173.247",
+    demo: "https://trainna.com.br",
     github: "",
     cover: "/projects/train-bala/logo.png",
     coverBg: "#14120E",

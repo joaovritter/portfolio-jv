@@ -29,7 +29,7 @@ export const profile = {
   // Estatísticas exibidas ao lado da foto (Sobre)
   stats: [
     { value: "2", label: "meias-maratonas\ncompletas" },
-    { value: "7º", label: "semestre de\nSI na UFN" },
+    { value: "8º", label: "semestre de\nSI na UFN" },
   ],
 
   socials: {
@@ -52,9 +52,9 @@ export const profile = {
 export const education = {
   course: "Bacharelado em Sistemas de Informação",
   institution: "Universidade Franciscana (UFN)",
-  period: "2023 — Atual",
-  semester: "7º semestre",
-  local: "Santa Maria — RS",
+  period: "2023 - Atual",
+  semester: "8º semestre",
+  local: "Santa Maria - RS",
   badge: "Em andamento · 7º semestre",
   focus:
     "Desenvolvimento de software, lógica de programação, arquitetura de sistemas de informação e banco de dados.",

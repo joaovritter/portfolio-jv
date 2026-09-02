@@ -44,6 +44,7 @@ export const techGroups: TechGroup[] = [
       { name: "HTML5", color: "#E34F26", slug: "html5", short: "H5" },
       { name: "CSS3", color: "#1572B6", slug: "css", short: "C3" },
       { name: "Tailwind CSS", color: "#38BDF8", slug: "tailwindcss", short: "Tw" },
+      {name : "Material UI", color: "#007FFF", slug: "mui", short: "MUI"},
     ],
   },
   {
@@ -74,6 +75,7 @@ export const techGroups: TechGroup[] = [
     items: [
       { name: "AWS", color: "#FF9900", icon: `${DEVICON}/amazonwebservices/amazonwebservices-original-wordmark.svg`, short: "AW", glyph: "AWS" },
       { name: "Google Cloud", color: "#4285F4", slug: "googlecloud", short: "GC" },
+      {name: "Cloudflare", color: "#F38020", slug: "cloudflare", short: "CF"},
       { name: "Docker", color: "#2496ED", slug: "docker", short: "Dk" },
       { name: "Linux", color: "#FCC624", slug: "linux", short: "Lx" },
       { name: "Git", color: "#F05032", slug: "git", short: "Gi" },
@@ -89,4 +91,4 @@ export const techGroups: TechGroup[] = [
       { name: "Integração com LLMs", color: "#CBB89D", short: "AI", glyph: "AI" },
     ],
   },
-];
+];\
