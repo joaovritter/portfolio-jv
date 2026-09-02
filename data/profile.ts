@@ -55,7 +55,7 @@ export const education = {
   period: "2023 - Atual",
   semester: "8º semestre",
   local: "Santa Maria - RS",
-  badge: "Em andamento · 7º semestre",
+  badge: "Em andamento · 8º semestre",
   focus:
     "Desenvolvimento de software, lógica de programação, arquitetura de sistemas de informação e banco de dados.",
   logo: "/UFN.png",
