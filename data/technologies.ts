@@ -91,4 +91,4 @@ export const techGroups: TechGroup[] = [
       { name: "Integração com LLMs", color: "#CBB89D", short: "AI", glyph: "AI" },
     ],
   },
-];\
+];
